@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate of Quality</title>
+    <style>
+        /* Define styles for printing */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .container, .container * {
+                visibility: visible;
+            }
+            .container {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 210mm; /* Ensure it fits A4 width */
+                height: 250mm; /* Ensure it fits A4 height */
+                overflow: hidden; /* Prevent overflow to next page */
+            }
+            .footer {
+                display: none;
+            }
+            .no-print {
+                display: none !important; /* Hide elements with class 'no-print' */
+            }
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* Light background to distinguish container */
+        }
+        .container {
+            width: 210mm; /* A4 width */
+            height: 250mm; /* A4 height */
+            margin: 0 auto; /* Center on the page */
+            padding: 10mm; /* Margin from the edge of the paper */
+            border: 2px solid #00AB9F;
+            border-radius: 10px;
+            background-color: #ffffff;
+
+        }
+
+
+        h2 {
+            text-align: center;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            color: #00AB9F;
+        }
+        p {
+            margin-bottom: 15px;
+            text-align: justify; /* Align text as justified */
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #00AB9F;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .no-outline-input1 {
+            display: none; /* Initially hide the input field */
+            border: none;
+            border-bottom: 1px solid transparent;
+            outline: none;
+            font-size: inherit;
+            font-family: inherit;
+            color: inherit;
+            background: transparent;
+            width: 100px; /* Increase width for input field */
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Letterhead Image -->
+    <img src="{{ url_for('static', filename='letterhead.png') }}" alt="Letterhead Image" style="display: block; margin: 0 auto; width: 100%; max-width: 100%;" />
+    <br>
+    <h2>CERTIFICATE OF QUALITY</h2>
+    <br><br>
+    <p>This is to certify that the ELECTROLAB <span><b>{{ item_name }}</b></span> has successfully passed quality assurance tests.</p>
+    <br>
+    <p>Model No: <span><b>{{ item_code }}</b></span></p>
+
+    <p>Serial No.: <span><b>{{ serial_no }}</b></span></p>
+
+    <p>Quantity: <span><b>{{ qty }}</b></span></p>
+
+    <p id="manufacture_year_text"></p> <!-- Placeholder for dynamically generated text -->
+
+    <p style="display: none;"><input type="text" id="manufacture_year_input" name="manufacture_year_input" class="no-outline-input1"></p>
+    <button onclick="setManufactureYear()" class="no-print">Set Year</button>
+    <button onclick="clearManufactureYear()" class="no-print">Clear</button>
+
+    <br>
+    <p>It has been manufactured in compliance with international GMP & USP standards, using the best available materials from reputed manufacturers. The quantity supplied matches the purchase order raised by M/S. <span><b>{{ territory }}</b></span>.</p>
+    <p>This certificate is issued by ELECTROLAB (INDIA) PVT. LTD. and is valid until further notice.</p>
+
+    <div class="footer">
+        <button onclick="window.print()">Print Certificate</button>
+    </div>
+</div>
+
+<script>
+    function setManufactureYear() {
+        var manufactureYearInput = document.getElementById('manufacture_year_input');
+        var year = prompt('Enter the manufacturing year:');
+        var manufactureYearText = document.getElementById('manufacture_year_text');
+        if (year !== null) {
+            manufactureYearText.innerHTML = 'Manufacture Year: <span><b>' + year + '</b></span>';
+            manufactureYearInput.style.display = 'none'; // Hide the input field
+        }
+    }
+
+    function clearManufactureYear() {
+        var manufactureYearText = document.getElementById('manufacture_year_text');
+        manufactureYearText.innerHTML = ''; // Clear the text
+        document.getElementById('manufacture_year_input').value = ''; // Clear the input field value
+        document.getElementById('manufacture_year_input').style.display = 'inline'; // Show the input field
+    }
+</script>
+</body>
+</html>
