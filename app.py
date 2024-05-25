@@ -76,8 +76,9 @@ def print_certificate():
             serial_no = selected_row['serial_no']
             qty = selected_row['qty']
             territory = selected_row['territory']
+            customer = selected_row['customer']
             certificate_content = render_template('certificate.html', item_name=selected_item_name, item_code=item_code,
-                                   serial_no=serial_no, qty=qty, territory=territory)
+                                   serial_no=serial_no, qty=qty, territory=territory, customer = customer)
             return render_template('index.html', item_names=item_names, certificate_content=certificate_content)
         else:
             return 'Item name is required to print the certificate.'
@@ -85,5 +86,10 @@ def print_certificate():
         return f'Request failed to retrieve data for {name}.'
 
 
-#f __name__ == '__main__':
-    #app.run(debug=True, host='0.0.0.0', port=5001)
+
+
+
+
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5001)
