@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Packing List</title>
+    <style>
+        /* Define styles for printing */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .container, .container * {
+                visibility: visible;
+            }
+            .container {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 210mm; /* Ensure it fits A4 width */
+                height: 297mm; /* Ensure it fits A4 height */
+                overflow: hidden; /* Prevent overflow to next page */
+            }
+            .footer {
+                display: none;
+            }
+            .no-print {
+                display: none !important; /* Hide elements with class 'no-print' */
+            }
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* Light background to distinguish container */
+        }
+        .container {
+            width: 210mm; /* A4 width */
+            height: 297mm; /* A4 height */
+            margin: 0 auto; /* Center on the page */
+            padding: 10mm; /* Margin from the edge of the paper */
+            border: 2px solid #000;
+            border-radius: 10px;
+            background-color: #ffffff;
+        }
+
+        h1 {
+            text-align: center;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            color: #000;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+            word-wrap: break-word;
+        }
+        th {
+            background-color: #000;
+            color: #ffffff;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #008080;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .small-text {
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Packing List</h1>
+    <table>
+        <tr>
+            <td colspan="4" class="small-text">
+                <strong>Exporter:</strong><br>
+                ELECTROLAB INDIA PVT LTD<br>
+                GR/1ST FLOOR, EL-23/24,<br>
+                T.T.C ELECTONICS ZONE, M.I.D.C, MAHAPE,<br>
+                NAVI MUMBAI -400 710. INDIA<br>
+                TEL NO.:- 91-22-41613131<br>
+                FAX NO:- 91-22-41613199
+            </td>
+            <td colspan="4" class="small-text">
+                <strong>Packing List No. & Date:</strong><br>
+                <strong>Buyer’s Order No:</strong> {Purchase Order No.}<br>
+                <strong>Other Reference(s):</strong>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" class="small-text">
+                <strong>Consignee:</strong><br>
+                {Customer name}<br>
+                {Shipping Address}
+            </td>
+            <td colspan="4" class="small-text">
+                <strong>Buyer (if other than consignee):</strong><br>
+                {Customer name}<br>
+                {Customer Address}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><strong>Pre-Carriage by:</strong> ROAD</td>
+            <td colspan="2"><strong>Place of Receipt by Pre-carrier:</strong></td>
+            <td colspan="2"><strong>Country of Origin:</strong> INDIA</td>
+            <td colspan="2"><strong>Country of Final Destination:</strong> {Country}</td>
+        </tr>
+        <tr>
+            <td colspan="2"><strong>Vessel/Flight No.:</strong></td>
+            <td colspan="2"><strong>Port of Loading:</strong> {Shipping From}</td>
+            <td colspan="2"><strong>Terms of Delivery:</strong> {Delivery Term}</td>
+            <td colspan="2"><strong>Port of Discharge:</strong> {Shipping To}</td>
+        </tr>
+        <tr>
+            <td colspan="2"><strong>Final Destination:</strong> {Shipping To}</td>
+            <td colspan="2"><strong>Terms of Payment:</strong> {Payment Term}</td>
+            <td colspan="4"></td>
+        </tr>
+        <tr>
+            <th>Marks & Nos./ Container No.</th>
+            <th>No. & Kind of Pkgs.</th>
+            <th>Description of Goods</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Net Wt.</th>
+            <th>Gross Wt.</th>
+            <th>Total Wt.</th>
+        </tr>
+        <!-- Repeat this block for each item -->
+        <tr>
+            <td></td>
+            <td></td>
+            <td>{item_name}</td>
+            <td>{qty}</td>
+            <td></td>
+            <td>0.00</td>
+            <td>0.00</td>
+            <td>0.00</td>
+        </tr>
+        <!-- End repeat -->
+        <tr>
+            <td colspan="5"><strong>Total Net Wt. & Gross Wt.</strong></td>
+            <td>0.00</td>
+            <td>0.00</td>
+            <td>0.00</td>
+        </tr>
+    </table>
+    <p class="small-text"><strong>NET WEIGHT:</strong> KGS</p>
+    <p class="small-text"><strong>GROSS WEIGHT:</strong> KGS</p>
+    <p class="small-text"><strong>NO OF PACKAGES:</strong> CASES</p>
+    <div class="footer">
+        <button onclick="window.print()">Print Packing List</button>
+    </div>
+</div>
+</body>
+</html>

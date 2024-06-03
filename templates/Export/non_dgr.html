@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shippers Certification for Non-Hazardous Cargo</title>
+    <style>
+        /* Define styles for printing */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .container, .container * {
+                visibility: visible;
+            }
+            .container {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 210mm; /* Ensure it fits A4 width */
+                height: 297mm; /* Ensure it fits A4 height */
+                overflow: hidden; /* Prevent overflow to next page */
+            }
+            .footer {
+                display: none;
+            }
+            .no-print {
+                display: none !important; /* Hide elements with class 'no-print' */
+            }
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* Light background to distinguish container */
+        }
+        .container {
+            width: 210mm; /* A4 width */
+            height: 297mm; /* A4 height */
+            margin: 0 auto; /* Center on the page */
+            padding: 10mm; /* Margin from the edge of the paper */
+            border: 2px solid #000;
+            border-radius: 10px;
+            background-color: #ffffff;
+        }
+
+        h1 {
+            text-align: center;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            color: #000;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #000;
+            color: #ffffff;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #008080;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Shippers Certification for Non-Hazardous Cargo</h1>
+    <table>
+        <tr>
+            <th>A.W.B.NO.</th>
+            <th>Airport of Departure</th>
+            <th>Airport for Destination</th>
+        </tr>
+        <tr>
+            <td></td>
+            <td>{Shipping From}</td>
+            <td>{Shipping To}</td>
+        </tr>
+    </table>
+    <p>
+        THIS IS TO CERTIFY THAT THE ARTICLES/SUBSTANCES OF THIS SHIPMENT ARE PROPERLY
+        DESCREASED BY NAME. THAT THEY ARE NOT LISTED CURRENT EDITION OF DANGEROUS
+        GOODS REGULATIONS(DGR). ALPHABETICAL LIST OF DANGEROUS GOODS. NOR DO THEY
+        CORRESPOND TO ANY OF THE HAZARD CLASSES APPEARING IN THE DGR SECTION 3
+        CLASSIFICATION OF DANGEROUS GOODS AND THAT THEY ARE KNOWN TO BE NOT
+        DANGEROUS i.e. NOT RESTRICTED. FURTHER MORE THE SHIPPER CONFIRMS THAT THE
+        GOODS ARE IN PROPER CONDITION FOR TRANSPORTATION OF PASSENGER CARRYING
+        AIRCRAFT (DGR PARA 8.1.23)
+    </p>
+    <table>
+        <tr>
+            <th>Marks and Number of Packages</th>
+            <th>Proper Description of Goods (Trade Name Not Permitted) Specify Each Article Separately</th>
+            <th>Net Quantity per Package</th>
+        </tr>
+        <!-- Repeat this block for each item -->
+        <tr>
+            <td></td>
+            <td></td>
+            <td>0.00</td>
+        </tr>
+        <!-- End repeat -->
+        <tr>
+            <td colspan="2" style="text-align: right;"><strong>Total</strong></td>
+            <td>0.00</td>
+        </tr>
+    </table>
+    <div class="footer">
+        <button onclick="window.print()">Print Certification</button>
+    </div>
+</div>
+</body>
+</html>

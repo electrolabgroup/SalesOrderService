@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Non SCOMET Item Declaration</title>
+    <style>
+        /* Define styles for printing */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .container, .container * {
+                visibility: visible;
+            }
+            .container {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 210mm; /* Ensure it fits A4 width */
+                height: 297mm; /* Ensure it fits A4 height */
+                overflow: hidden; /* Prevent overflow to next page */
+            }
+            .footer {
+                display: none;
+            }
+            .no-print {
+                display: none !important; /* Hide elements with class 'no-print' */
+            }
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* Light background to distinguish container */
+        }
+        .container {
+            width: 210mm; /* A4 width */
+            height: 297mm; /* A4 height */
+            margin: 0 auto; /* Center on the page */
+            padding: 10mm; /* Margin from the edge of the paper */
+            border-radius: 10px;
+            background-color: #ffffff;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #000;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #000;
+            color: #ffffff;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #008080;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .header img {
+            max-width: 100px;
+        }
+        .header div {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+        <img src="{{ url_for('static', filename='letterhead.png') }}" alt="Letterhead Image" style="display: block; margin: 0 auto; width: 100%; max-width: 100%;" />
+
+
+    <p><strong>Date:</strong> </p>
+    <p>To,<br>
+    The Dy. Commissioner of Customs,<br>
+    Export Department,<br>
+    ACC, Mumbai – 99.</p>
+    <p><strong>Sub: Non SCOMET Item Declaration</strong></p>
+    <p><strong>Ref: Commercial Invoice No:</strong>{Commercial Invoice Number}</p>
+    <p>With reference to the above subject, the referred shipment contains:</p>
+    <table>
+        <tr>
+            <th>Sr. No</th>
+            <th>Item Name</th>
+            <th>Net Quantity per Package</th>
+        </tr>
+        <!-- Repeat this block for each item -->
+         {% for row in items %}
+        <tr class="line-item">
+            <td>{{ loop.index }}</td>
+            <td>{{ row['item_name'] }}</td>
+            <td>{{row['qty']}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <ul>
+
+        <li>{{item_name}}</li>
+
+    </ul>
+    <p>is used to check the hardness of tablets & there is no dual use of export product for any other purpose listed in the SCOMET Items. We hereby request you to kindly allow the goods for export.</p>
+    <p>Kindly do the needful and oblige.</p>
+    <p>Thanking you,<br>
+    For Electrolab (India) Pvt Ltd</p>
+    <p><br><br><br>Authorised Signatory.</p>
+    <div class="footer">
+        <button onclick="window.print()">Print Declaration</button>
+    </div>
+</div>
+</body>
+</html>

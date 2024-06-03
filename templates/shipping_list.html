@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commercial Invoice</title>
+    <style>
+/* Ensure proper border collapse and spacing */
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* Add border to line-item rows */
+.line-item td {
+    border-left: 1px solid #000; /* Add left border */
+    border-right: 1px solid #000; /* Add right border */
+    padding: 3px; /* Maintain padding */
+    text-align: left;
+    word-wrap: break-word;
+}
+
+/* Add bottom border to last row */
+table tr:last-child td {
+    border-bottom: 1px solid #000 !important;
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    .container, .container * {
+        visibility: visible;
+    }
+        .container {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 300mm; /* A4 width */
+        min-height: 297mm; /* A4 height */
+        padding: 3mm; /* Padding to ensure content is not too close to the edges */
+        box-sizing: border-box; /* Ensure padding is included in the width */
+    }
+    .footer {
+        display: none;
+    }
+    .no-print {
+        display: none !important; /* Hide elements with class 'no-print' */
+    }
+    table {
+        width: 100%; /* Ensure the table fits within the container */
+        page-break-inside: auto; /* Allow table to break across pages */
+        border-collapse: collapse; /* Ensure no extra spacing in table */
+    }
+    tr, td, th {
+        page-break-inside: avoid; /* Avoid breaking table row inside */
+    }
+    td, th {
+        word-wrap: break-word; /* Break long words to prevent overflow */
+    }
+
+    .edit-button {
+        display: none !important; /* Hide elements with class 'no-print' */
+    }
+
+    .letterhead-row {
+        display: table-row !important; /* Ensure the letterhead row is displayed in print */
+    }
+
+     .line-item.page-break-bottom td {
+        border-bottom: 1px solid #000; /* Add bottom border when there's a page break */
+    }
+
+}
+
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10mm;
+            background-color: #f4f4f4;
+            font-size: 0.7em; /* Reduce font size for the entire body */
+        }
+
+         .container {
+            width: 320mm; /* A4 width */
+
+            margin: 0 auto; /* Center on the page */
+            padding: 10mm; /* Margin from the edge of the paper */
+
+            border-radius: 10px;
+
+
+        }
+
+
+        h1 {
+            text-align: center;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            color: #00AB9F;
+            font-size: 1.2em; /* Reduce font size for heading */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 5px; /* Reduced margin for tables */
+            page-break-inside: auto; /* Ensure tables break correctly */
+        }
+
+        th, td {
+            border: 1px solid #000;
+            padding: 3px; /* Reduced padding for table cells */
+            text-align: left;
+            word-wrap: break-word;
+        }
+
+        .small-text {
+            font-size: 0.5em; /* Further reduced font size for small text */
+        }
+
+        .small-height {
+            height: 1px; /* Adjusted height */
+        }
+
+        .edit-button {
+            padding: 2px 4px; /* Reduced padding for edit buttons */
+            background-color: #008080;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.65em; /* Reduce font size for edit buttons */
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 10px; /* Reduced margin for footer */
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #008080;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .no-outline-input1 {
+            display: none; /* Initially hide the input field */
+            border: none;
+            border-bottom: 1px solid transparent;
+            outline: none;
+            font-size: inherit;
+            font-family: inherit;
+            color: inherit;
+            background: transparent;
+            width: 100px; /* Increase width for input field */
+            text-align: center;
+        }
+
+
+        .letterhead-row {
+            display: none; /* Hide the letterhead row by default */
+        }
+
+        .center-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 20%;
+    max-width: 20%;
+}
+
+table {
+    border-collapse: collapse; /* Ensure table borders collapse properly */
+    width: 100%; /* Set table width to 100% */
+    border: 1px solid #000; /* Add border to the entire table */
+}
+
+th, td {
+    border: 1px solid #000; /* Add border to table cells */
+    padding: 3px; /* Add padding to table cells */
+    text-align: left;
+    word-wrap: break-word;
+}
+
+th {
+    background-color: #f2f2f2; /* Optionally, add background color to table headers */
+}
+
+
+.line-item td {
+        border-top: none; /* Remove top border */
+        border-bottom: none; /* Add bottom border */
+    }
+}
+@page {
+    size: A4;
+    margin: 3mm;
+    transform: scale(1.5);
+}
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Shipping Instruction</h1>
+    <table>
+        <tr>
+            <td colspan="4">
+                <strong>Exporter:</strong><br>
+                Electrolab India Pvt Ltd<br>
+                EL 23/24, T.T.C Electronic Zone, MIDC, Mahape, Navi Mumbai - 400 710, India Tel No. 91-22-41613131
+            </td>
+            <td colspan="4">
+                <strong>Commercial Invoice No. & Date:</strong><br>
+                <strong>Buyer’s Order No:</strong> <span id="po_no_placeholder">{{ po_no }}</span> <button class="edit-button" onclick="editField_po('po_no')">Edit</button><br>
+                <strong>Bombay Customs EDP No. AD NO.:</strong><br>
+                <strong>Import Export Code:</strong> 0306042673<br>
+                <strong>Income Tax A/c No.:</strong> AABCE1743J
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <strong>Consignee:</strong><br>
+                {{customer}}<br>
+                {{customer_address | safe}}
+            </td>
+            <td colspan="4">
+                <strong>Buyer (if other than consignee):</strong><br>
+                {{shipping_address_name}}<br>
+                {{shipping_address | safe}}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><strong>Pre-Carriage by:</strong> ROAD</td>
+            <td colspan="2"><strong>Place of Receipt by Pre-carrier:</strong></td>
+            <td colspan="2"><strong>Country of Origin:</strong> INDIA</td>
+            <td colspan="2"><strong>Country of Final Destination:</strong> {Country}</td>
+        </tr>
+        <tr>
+            <td colspan="2"><strong>Vessel/Flight No.:</strong></td>
+            <td colspan="2"><strong>Port of Loading:</strong> {editable_from}</td>
+            <td colspan="2"><strong>Port of Discharge:</strong> {editable_to}</td>
+            <td colspan="2"><strong>Final Destination:</strong> {editable_to}</td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <strong>FOB Value for customs purpose Rs.:</strong><br>
+                <strong>Real Value for customs purpose Rs.:</strong><br>
+                <strong>Invoice:</strong><br>
+                <strong>FOB Rs.:</strong><br>
+            </td>
+            <td colspan="4">
+                <strong>C&F Rs.:</strong><br>
+                <strong>CIF Rs.:</strong><br>
+                <strong>Drawback Schedule No.:</strong><br>
+                <strong>Drawback Rate:</strong>
+            </td>
+        </tr>
+        <tr>
+            <th>Marks & Nos./ Container No.</th>
+            <th>No. & Kind of Pkgs.</th>
+            <th>HSN CODE</th>
+            <th>Description of Goods</th>
+            <th>Quantity</th>
+            <th>Rate in {{currency}}</th>
+            <th>Amount in {{currency}}</th>
+        </tr>
+        <!-- Repeat this block for each item -->
+        {% for row in items %}
+        <tr class="line-item">
+            <td><span id="index_placeholder">{{ loop.index }}  </span> <button class="edit-button" onclick="editIndex()">Edit</button></td>
+            <td><span id="no_kind_placeholder">{{ no_kind }}  </span> <button class="edit-button" onclick="editNoKind()">Edit</button></td>
+            <td><span id="hsn_placeholder">{{ hsn }}  </span> <button class="edit-button" onclick="editHSN()">Edit</button></td>
+            <td><span id="item_name_placeholder">{{ row['item_name'] }}  </span> <button class="edit-button" onclick="editItemName()">Edit</button></td>
+            <td><span id="qty_placeholder">{{ row['qty'] }}  </span> <button class="edit-button" onclick="editQty()">Edit</button></td>
+            <td><span id="rate_placeholder">{{ row['rate'] }}  </span> <button class="edit-button" onclick="editRate()">Edit</button></td>
+            <td><span id="qty_rate_placeholder">{{ row['qty'] * row['rate'] }}  </span> <button class="edit-button" onclick="editQtyRate()">Edit</button></td>
+        </tr>
+        {% endfor %}
+        <!-- End repeat -->
+        <tr>
+            <td colspan="2" rowspan="3">
+                <strong>Net Wt:</strong> {{total_net_weight}} KGS <br>
+            </td>
+            <td colspan="2" rowspan="3">
+                <strong>Gross Wt:</strong> {{gross}} KGS
+            </td>
+            <td colspan="2"><strong>Add: Packing Charges</strong></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="2"><strong>Add: Wire/Bank Charges</strong></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="2"><strong>Add: Freight Charges</strong></td>
+            <td>{{freight_amt}}</td>
+        </tr>
+        <tr>
+            <td colspan="4"><strong>Total:</strong></td>
+            <td colspan="2"></td>
+            <td></td>
+        </tr>
+    </table>
+    <div class="footer">
+        <button onclick="window.print()">Print Shipping Instruction</button>
+    </div>
+</div>
+</body>
+<script>
+    window.addEventListener('beforeprint', function() {
+    // This is a workaround to set the print scale in browsers that support it
+    const printStyle = document.createElement('style');
+    printStyle.innerHTML = `
+        @page {
+            zoom: 1.5;
+        }
+    `;
+    document.head.appendChild(printStyle);
+});
+
+</script>
+</html>

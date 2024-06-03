@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commercial Invoice</title>
+    <style>
+/* Ensure proper border collapse and spacing */
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* Add border to line-item rows */
+.line-item td {
+    border-left: 1px solid #000; /* Add left border */
+    border-right: 1px solid #000; /* Add right border */
+    padding: 3px; /* Maintain padding */
+    text-align: left;
+    word-wrap: break-word;
+}
+
+/* Add bottom border to last row */
+table tr:last-child td {
+    border-bottom: 1px solid #000 !important;
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    .container, .container * {
+        visibility: visible;
+    }
+    .container {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 300mm; /* A4 width */
+        min-height: 297mm; /* A4 height */
+        padding: 3mm; /* Padding to ensure content is not too close to the edges */
+        box-sizing: border-box; /* Ensure padding is included in the width */
+    }
+    .footer {
+        display: none;
+    }
+    .no-print {
+        display: none !important; /* Hide elements with class 'no-print' */
+    }
+    table {
+        width: 100%; /* Ensure the table fits within the container */
+        page-break-inside: auto; /* Allow table to break across pages */
+        border-collapse: collapse; /* Ensure no extra spacing in table */
+    }
+    tr, td, th {
+        page-break-inside: avoid; /* Avoid breaking table row inside */
+    }
+    td, th {
+        word-wrap: break-word; /* Break long words to prevent overflow */
+    }
+
+    .edit-button {
+        display: none !important; /* Hide elements with class 'no-print' */
+    }
+
+    .letterhead-row {
+        display: table-row !important; /* Ensure the letterhead row is displayed in print */
+    }
+
+     .line-item.page-break-bottom td {
+        border-bottom: 1px solid #000; /* Add bottom border when there's a page break */
+    }
+
+}
+
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10mm;
+            background-color: #f4f4f4;
+            font-size: 0.7em; /* Reduce font size for the entire body */
+        }
+
+         .container {
+            width: 320mm; /* A4 width */
+
+            margin: 0 auto; /* Center on the page */
+            padding: 10mm; /* Margin from the edge of the paper */
+
+            border-radius: 10px;
+
+
+        }
+
+        h1 {
+            text-align: center;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            color: #00AB9F;
+            font-size: 1.2em; /* Reduce font size for heading */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 5px; /* Reduced margin for tables */
+            page-break-inside: auto; /* Ensure tables break correctly */
+        }
+
+        th, td {
+            border: 1px solid #000;
+            padding: 3px; /* Reduced padding for table cells */
+            text-align: left;
+            word-wrap: break-word;
+        }
+
+        .small-text {
+            font-size: 0.5em; /* Further reduced font size for small text */
+        }
+
+        .small-height {
+            height: 1px; /* Adjusted height */
+        }
+
+        .edit-button {
+            padding: 2px 4px; /* Reduced padding for edit buttons */
+            background-color: #008080;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.65em; /* Reduce font size for edit buttons */
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 10px; /* Reduced margin for footer */
+        }
+
+        button {
+            padding: 5px 10px; /* Adjusted button padding */
+            background-color: #008080;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 6px; /* Reduced margin for buttons */
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .letterhead-row {
+            display: none; /* Hide the letterhead row by default */
+        }
+
+        .center-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 20%;
+    max-width: 20%;
+}
+
+table {
+    border-collapse: collapse; /* Ensure table borders collapse properly */
+    width: 100%; /* Set table width to 100% */
+    border: 1px solid #000; /* Add border to the entire table */
+}
+
+th, td {
+    border: 1px solid #000; /* Add border to table cells */
+    padding: 3px; /* Add padding to table cells */
+    text-align: left;
+    word-wrap: break-word;
+}
+
+th {
+    background-color: #f2f2f2; /* Optionally, add background color to table headers */
+}
+
+
+.line-item td {
+        border-top: none; /* Remove top border */
+        border-bottom: none; /* Add bottom border */
+    }
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <table>
+            <tr class="letterhead-row">
+                <td colspan="14">
+                    <h1><strong>Commercial Invoice</strong> </h1>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="7"><br>
+                    <strong>Exporter:</strong><br>
+                    Electrolab India Pvt Ltd<br>
+                    GR/1ST Floor, EL-23/24,<br>
+                    T.T.C Electronics Zone, M.I.D.C, <br>
+                    Mahape,Navi Mumbai-400 710. India<br>
+                    Tel No.:- 91-22-41613131<br>
+                    Fax No:- 91-22-41613199
+                </td>
+                <td colspan="7">
+                    <strong>Commercial Invoice No. & Date:</strong><br><br>
+
+                    <strong>Buyer’s Order No:</strong> <span id="po_no_placeholder">{{ po_no }}</span> <button class="edit-button" onclick="editField_po('po_no')">Edit</button>
+                    <p id="other_reference_text"></p> <!-- Placeholder for dynamically generated text -->
+                        <p style="display: none;"><input type="text" id="other_reference_input" name="other_reference_input" class="no-outline-input1"></p>
+    <button onclick="setotherReference()" class="no-print">Set Other References</button>
+    <button onclick="clearManufactureYear()" class="no-print">Clear</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7">
+    <strong>Consignee:</strong><br>
+    <span id="ship_name_placeholder">{{shipping_address_name}}</span> <button class="edit-button" onclick="editField_ship_name('shipping_address_name')">Edit</button><br>
+    <span id="ship_address_placeholder" contenteditable="true">{{ shipping_address | safe}}</span><br><button class="edit-button" onclick="editShippingAddress()">Edit</button><br>
+            </td>
+
+                <td colspan="7">
+                    <strong>Buyer (if other than consignee):</strong><br>
+                    <span id="customer_name_placeholder">{{customer}}</span> <button class="edit-button" onclick="editField_customer_name('customer_name')">Edit</button><br>
+                    <span id="customer_address_placeholder" contenteditable="true">{{ customer_address | safe }}</span><br><button class="edit-button" onclick="editCustomerAddress()">Edit</button><br>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4"><strong>Pre-Carriage by:</strong> ROAD</td>
+                <td colspan="4">
+                    <p id="other_reference_pre_carrier_text"></p> <!-- Placeholder for dynamically generated text -->
+                    <p style="display: none;"><input type="text" id="other_reference_pre_carrier_input" name="other_reference_pre_carrier_input" class="no-outline-input1"></p>
+                    <button onclick="setotherReferencePre_Carrier()" class="no-print">Place of Receipt by Pre-carrier:</button></td>
+                <td colspan="4"><strong>Country of Origin:</strong> INDIA</td>
+                <td colspan="4"><strong>Country of Final Destination:</strong> <span id="country_of_final_destination_placeholder">{{territory}}  </span> <button class="edit-button" onclick="editCountryOfFinalDestination()">Edit</button></td>
+            </tr>
+            <tr>
+                <td colspan="4"><strong>Vessel/Flight No.:</strong></td>
+                <td colspan="4"><strong>Port of Loading:</strong> {Shipping From}</td>
+                <td colspan="4"><strong>Terms of Delivery:</strong> <span id="freight_terms_placeholder">{{freight_term}}  </span> <button class="edit-button" onclick="editFreightTerms()">Edit</button></td>
+                <td colspan="4"><strong>Port of Discharge:</strong> <span id="port_of_discharge_placeholder">{{territory}}  </span> <button class="edit-button" onclick="editPortOfDischarge()">Edit</button></td>
+            </tr>
+            <tr>
+                <td colspan="7"><strong>Final Destination:</strong> <span id="final_destination_placeholder">{{territory}}  </span> <button class="edit-button" onclick="editFinalDestination()">Edit</button></td>
+                <td colspan="7"><strong>Terms of Payment:</strong> <span id="payment_terms_placeholder">{{payment_terms_template}}  </span> <button class="edit-button" onclick="editPaymentTerms()">Edit</button></td>
+            </tr>
+            <tr>
+                <th>Marks & Nos./ Container No.</th>
+                <th>No. & Kind of Pkgs.</th>
+                <th>HSN CODE</th>
+                <th colspan="6">Description of Goods</th>
+                <th>Quantity</th>
+                <th>Unit</th>
+                <th>Rate in {{currency}}</th>
+                <th>Amount in {{currency}}</th>
+            </tr>
+            {% for row in items %}
+            <tr class="line-item">
+    <td>{{ loop.index }}</td>
+    <td>{{ no_kind }}</td>
+    <td>{{ hsn }}</td>
+    <td colspan="6">{{ row['item_name'] }}</td>
+    <td>{{ row['qty'] }}</td>
+    <td>{{ unit }}</td>
+    <td>{{ row['rate'] }}</td>
+    <td>{{ row['qty'] * row['rate'] }}</td>
+</tr>
+
+            {% endfor %}
+            <tr>
+                <td colspan="7" rowspan="2">
+                    <table>
+                        <tr>
+                            <td colspan="10" style="border:none;">
+                                <b>Our Banker's Name & Address :</b><br><br>
+                                Kotak Mahindra Bank LTD<br>
+                                Plot N0.75, Sector 18, Shop No.4, Charms Heights,<br>
+                                3,6,5 Channel Tower, Koparkhairane -400 709
+                            </td>
+                        </tr>
+                        <tr class="small-height">
+                            <td style="border: none;"><b>USD A/C NO. :</b></td>
+                            <td style="border: none;">9211358795</td>
+                            <td style="border: none;"><b>Permanent A/C NO. :</b></td>
+                            <td style="border: none;">AABCE1743J</td>
+                        </tr>
+                        <tr class="small-height">
+                            <td style="border: none;"><b>Swift Address:</b></td>
+                            <td style="border: none;">KKBKINBB</td>
+                            <td style="border: none;"><b>GST TIN No. :</b></td>
+                            <td style="border: none;">27AABCE1743J1ZQ</td>
+                        </tr>
+                        <tr class="small-height">
+                            <td style="border: none;"><b>AD Code No. :</b></td>
+                            <td style="border: none;">0180156-6010488</td>
+                            <td style="border: none;"><b>End Use Code :</b></td>
+                            <td style="border: none;">GNX810</td>
+                        </tr>
+                        <tr class="small-height">
+                            <td style="border: none;"><b>IEC Code:</b></td>
+                            <td style="border: none;">0306042673</td>
+                            <td style="border: none;"><b>LUT ARN NO. :</b></td>
+                            <td style="border: none;">AD2703230407919 Dt. 23.03.2023</td>
+                        </tr>
+                    </table>
+                </td>
+                <td colspan="4"><strong>Add: Packing Charges</strong></td>
+                <td>{{packing_charges}}</td>
+                <td>0.00</td>
+            </tr>
+            <tr>
+                <td colspan="4"><strong>Add: Freight Charges</strong></td>
+                <td>{{freight_amt}}</td>
+                <td>0.00</td>
+            </tr>
+            <tr>
+                <td colspan="7"><strong>Amount Chargeable (in words):</strong></td>
+                <td colspan="4"><strong>Total:</strong></td>
+                <td></td>
+                <td>0.00</td>
+            </tr>
+            <tr>
+                <td colspan="14">
+                    <ul type="disc">
+                        <li>We declare that this invoice shows the actual price of the Goods described and that all particulars are true and correct.</li>
+                        <li>We intend to claim remission of duties and taxes on exported products (RODTEP) Scheme.</li>
+                        <li>We certify that Goods supplied are of Indian origin.</li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <div class="footer">
+            <button onclick="window.print()">Print Commercial Invoice</button>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript function to handle editing of fields
+        function editField_po(field) {
+            var newValue = prompt('Enter new value for ' + field + ':', '{{ po_no }}');
+            if (newValue !== null) {
+                // Update the placeholder with the new value
+                document.getElementById('po_no_placeholder').innerText = newValue;
+                // Optionally, you can also send the new value to the server via AJAX
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/update_po_no", true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.send("new_po_no=" + newValue);
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        // Optionally, you can handle the response from the server
+                        console.log('Value updated successfully');
+                    }
+                };
+            }
+        }
+
+
+
+
+        function editField_ship_name(field) {
+            var newValue = prompt('Enter new value for ' + field + ':', '{{ shipping_address_name }}');
+            if (newValue !== null) {
+                // Update the placeholder with the new value
+                document.getElementById('ship_name_placeholder').innerText = newValue;
+                // Optionally, you can also send the new value to the server via AJAX
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/update_ship_name", true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.send("new_ship_name=" + newValue);
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        // Optionally, you can handle the response from the server
+                        console.log('Value updated successfully');
+                    }
+                };
+            }
+        }
+
+
+    </script>
+<script>
+        function editShippingAddress() {
+            var addressSpan = document.getElementById("ship_address_placeholder");
+            var currentAddress = addressSpan.innerHTML.trim();
+            var newAddress = prompt("Enter new shipping address:", currentAddress);
+
+            if (newAddress !== null && newAddress !== "") {
+                addressSpan.innerHTML = newAddress;
+                // You may also want to send an AJAX request to update the shipping address in the backend
+            }
+        }
+    </script>
+<script>
+    function editField_customer_name(field) {
+            var newValue = prompt('Enter new value for ' + field + ':', '{{ customer }}');
+            if (newValue !== null) {
+                // Update the placeholder with the new value
+                document.getElementById('customer_name_placeholder').innerText = newValue;
+                // Optionally, you can also send the new value to the server via AJAX
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/update_customer_name", true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.send("new_ship_name=" + newValue);
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        // Optionally, you can handle the response from the server
+                        console.log('Value updated successfully');
+                    }
+                };
+            }
+        }
+</script>
+
+<script>
+    function editCustomerAddress() {
+        var addressSpan = document.getElementById("customer_address_placeholder");
+        var currentAddress = addressSpan.innerHTML.trim();
+        var newAddress = prompt("Enter new customer address:", currentAddress);
+
+        if (newAddress !== null && newAddress !== "") {
+            addressSpan.innerHTML = newAddress;
+            // You may also want to send an AJAX request to update the shipping address in the backend
+        }
+    }
+</script>
+
+<script>
+    function setotherReference() {
+        var otherreferenceInput = document.getElementById('other_reference_input');
+        var reference = prompt('Enter Other References:');
+        var otherReferenceText = document.getElementById('other_reference_text');
+        if (reference !== null) {
+            otherReferenceText.innerHTML = '<b>Other References: </b><span>' + reference + '</span>';
+            otherreferenceInput.style.display = 'none'; // Hide the input field
+        }
+    }
+
+    function clearManufactureYear() {
+        var otherReferenceText = document.getElementById('other_reference_text');
+        otherReferenceText.innerHTML = ''; // Clear the text
+        document.getElementById('other_reference_input').value = ''; // Clear the input field value
+        document.getElementById('other_reference_input').style.display = 'inline'; // Show the input field
+    }
+</script>
+
+<script>
+    // JavaScript function to handle editing of fields
+    function editFinalDestination(field) {
+        var newValue = prompt('Enter new value for ' + field + ':', '{{ territory }}');
+        if (newValue !== null) {
+            // Update the placeholder with the new value
+            document.getElementById('final_destination_placeholder').innerText = newValue;
+            // Optionally, you can also send the new value to the server via AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/update_final_destination", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("new_po_no=" + newValue);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Optionally, you can handle the response from the server
+                    console.log('Value updated successfully');
+                }
+            };
+        }
+    }
+    </script>
+
+<script>
+    // JavaScript function to handle editing of fields
+    function editPaymentTerms(field) {
+        var newValue = prompt('Enter new value for ' + field + ':', '{{ payment_terms_template }}');
+        if (newValue !== null) {
+            // Update the placeholder with the new value
+            document.getElementById('payment_terms_placeholder').innerText = newValue;
+            // Optionally, you can also send the new value to the server via AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/update_payment_terms", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("new_po_no=" + newValue);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Optionally, you can handle the response from the server
+                    console.log('Value updated successfully');
+                }
+            };
+        }
+    }
+    </script>
+<script>
+    function setotherReferencePre_Carrier() {
+        var otherreferenceInput = document.getElementById('other_reference_pre_carrier_input');
+        var reference = prompt('Enter Other References:');
+        var otherReferenceText = document.getElementById('other_reference_pre_carrier_text');
+        if (reference !== null) {
+            otherReferenceText.innerHTML = '<b>Other References: </b><span>' + reference + '</span>';
+            otherreferenceInput.style.display = 'none'; // Hide the input field
+        }
+    }
+</script>
+<script>
+    function setotherReferenceVessel_Flight() {
+        var otherreferenceInput = document.getElementById('other_reference_vessel_flight_input');
+        var reference = prompt('Enter Other References:');
+        var otherReferenceText = document.getElementById('other_reference_pre_carrier_text');
+        if (reference !== null) {
+            otherReferenceText.innerHTML = '<b>Other References: </b><span>' + reference + '</span>';
+            otherreferenceInput.style.display = 'none'; // Hide the input field
+        }
+    }
+</script>
+
+<script>
+    // JavaScript function to handle editing of fields
+    function editCountryOfFinalDestination(field) {
+        var newValue = prompt('Enter new value for ' + field + ':', '{{ territory }}');
+        if (newValue !== null) {
+            // Update the placeholder with the new value
+            document.getElementById('country_of_final_destination_placeholder').innerText = newValue;
+            // Optionally, you can also send the new value to the server via AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/update_country_of_final_destination", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("new_po_no=" + newValue);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Optionally, you can handle the response from the server
+                    console.log('Value updated successfully');
+                }
+            };
+        }
+    }
+    </script>
+
+<script>
+    // JavaScript function to handle editing of fields
+    function editPortOfDischarge(field) {
+        var newValue = prompt('Enter new value for ' + field + ':', '{{ territory }}');
+        if (newValue !== null) {
+            // Update the placeholder with the new value
+            document.getElementById('port_of_discharge_placeholder').innerText = newValue;
+            // Optionally, you can also send the new value to the server via AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/update_port_of_discharge", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("new_po_no=" + newValue);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Optionally, you can handle the response from the server
+                    console.log('Value updated successfully');
+                }
+            };
+        }
+    }
+    </script>
+
+<script>
+    // JavaScript function to handle editing of fields
+    function editFreightTerms(field) {
+        var newValue = prompt('Enter new value for ' + field + ':', '{{ freight_term }}');
+        if (newValue !== null) {
+            // Update the placeholder with the new value
+            document.getElementById('freight_terms_placeholder').innerText = newValue;
+            // Optionally, you can also send the new value to the server via AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/update_freight_terms", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("new_po_no=" + newValue);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Optionally, you can handle the response from the server
+                    console.log('Value updated successfully');
+                }
+            };
+        }
+    }
+    </script>
+</body>
+</html>
