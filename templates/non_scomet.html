@@ -96,14 +96,13 @@
 
         <img src="{{ url_for('static', filename='letterhead.png') }}" alt="Letterhead Image" style="display: block; margin: 0 auto; width: 100%; max-width: 100%;" />
 
-
     <p><strong>Date:</strong> </p>
     <p>To,<br>
     The Dy. Commissioner of Customs,<br>
     Export Department,<br>
     ACC, Mumbai – 99.</p>
     <p><strong>Sub: Non SCOMET Item Declaration</strong></p>
-    <p><strong>Ref: Commercial Invoice No:</strong>{Commercial Invoice Number}</p>
+    <p><strong>Ref: Commercial Invoice No:</strong><span id="invoice_placeholder">{{ Commercial_Invoice_Number }}</span> <button class="edit-button" onclick="editInvoice()">Edit</button></p>
     <p>With reference to the above subject, the referred shipment contains:</p>
     <table>
         <tr>
@@ -112,18 +111,16 @@
             <th>Net Quantity per Package</th>
         </tr>
         <!-- Repeat this block for each item -->
-         {% for row in items %}
+        {% for row in items %}
         <tr class="line-item">
             <td>{{ loop.index }}</td>
-            <td>{{ row['item_name'] }}</td>
-            <td>{{row['qty']}}</td>
+            <td><span id="item_placeholder_{{ loop.index }}">{{ row.item_name }}</span> <button class="edit-button" onclick="editItem({{ loop.index }})">Edit</button></td>
+            <td><span id="qty_placeholder_{{ loop.index }}">{{ row.qty }}</span> <button class="edit-button" onclick="editQty({{ loop.index }})">Edit</button></td>
         </tr>
         {% endfor %}
     </table>
     <ul>
-
-        <li>{{item_name}}</li>
-
+        <li>{{ item_name }}</li>
     </ul>
     <p>is used to check the hardness of tablets & there is no dual use of export product for any other purpose listed in the SCOMET Items. We hereby request you to kindly allow the goods for export.</p>
     <p>Kindly do the needful and oblige.</p>
@@ -134,5 +131,64 @@
         <button onclick="window.print()">Print Declaration</button>
     </div>
 </div>
+
+<script>
+    function editInvoice() {
+        var newValue = prompt('Enter new value for invoice number:', '{{ Commercial_Invoice_Number }}');
+        if (newValue !== null) {
+            // Update the placeholder with the new value
+            document.getElementById('invoice_placeholder').innerText = newValue;
+            // Optionally, you can also send the new value to the server via AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/update_invoice", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("new_invoice=" + newValue);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Optionally, you can handle the response from the server
+                    console.log('Value updated successfully');
+                }
+            };
+        }
+    }
+
+    function editItem(index) {
+        var newValue = prompt('Enter new value for item name:', document.getElementById('item_placeholder_' + index).innerText);
+        if (newValue !== null) {
+            // Update the placeholder with the new value
+            document.getElementById('item_placeholder_' + index).innerText = newValue;
+            // Optionally, you can also send the new value to the server via AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/update_item_name", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("new_item_name=" + newValue + "&index=" + index);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Optionally, you can handle the response from the server
+                    console.log('Value updated successfully');
+                }
+            };
+        }
+    }
+
+    function editQty(index) {
+        var newValue = prompt('Enter new value for quantity:', document.getElementById('qty_placeholder_' + index).innerText);
+        if (newValue !== null) {
+            // Update the placeholder with the new value
+            document.getElementById('qty_placeholder_' + index).innerText = newValue;
+            // Optionally, you can also send the new value to the server via AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/update_qty", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("new_qty=" + newValue + "&index=" + index);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Optionally, you can handle the response from the server
+                    console.log('Value updated successfully');
+                }
+            };
+        }
+    }
+</script>
 </body>
 </html>

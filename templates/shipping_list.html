@@ -32,13 +32,11 @@ table tr:last-child td {
     .container, .container * {
         visibility: visible;
     }
-        .container {
+    .container {
         position: absolute;
         left: 0;
-        right: 0;
         top: 0;
-        bottom: 0;
-        width: 300mm; /* A4 width */
+        width: 310mm; /* A4 width */
         min-height: 297mm; /* A4 height */
         padding: 3mm; /* Padding to ensure content is not too close to the edges */
         box-sizing: border-box; /* Ensure padding is included in the width */
@@ -84,8 +82,8 @@ table tr:last-child td {
             font-size: 0.7em; /* Reduce font size for the entire body */
         }
 
-         .container {
-            width: 320mm; /* A4 width */
+                .container {
+            width: 240mm; /* A4 width */
 
             margin: 0 auto; /* Center on the page */
             padding: 10mm; /* Margin from the edge of the paper */
@@ -94,8 +92,6 @@ table tr:last-child td {
 
 
         }
-
-
         h1 {
             text-align: center;
             text-transform: uppercase;
@@ -216,54 +212,64 @@ th {
     <table>
         <tr>
             <td colspan="4">
-                <strong>Exporter:</strong><br>
+                <strong>Exporter:</strong><br><br>
                 Electrolab India Pvt Ltd<br>
-                EL 23/24, T.T.C Electronic Zone, MIDC, Mahape, Navi Mumbai - 400 710, India Tel No. 91-22-41613131
+                EL 23/24, T.T.C Electronic Zone, <br>
+                MIDC, Mahape, Navi Mumbai - 400 710,<br>
+                India Tel No. 91-22-41613131<br>
             </td>
             <td colspan="4">
-                <strong>Commercial Invoice No. & Date:</strong><br>
+                <br>
+                <strong>Commercial Invoice No. & Date:</strong><br><br>
                 <strong>Buyer’s Order No:</strong> <span id="po_no_placeholder">{{ po_no }}</span> <button class="edit-button" onclick="editField_po('po_no')">Edit</button><br>
-                <strong>Bombay Customs EDP No. AD NO.:</strong><br>
-                <strong>Import Export Code:</strong> 0306042673<br>
+                <p id="other_reference_text"></p> <!-- Placeholder for dynamically generated text -->
+                        <p style="display: none;"><input type="text" id="other_reference_input" name="other_reference_input" class="no-outline-input1"></p>
+    <button onclick="setotherReference()" class="no-print">Bombay Customs EDP No. AD NO.</button>
+    <button onclick="clearManufactureYear()" class="no-print">Clear</button><br>
+                <strong>Import Export Code:</strong> 0306042673<br><br>
                 <strong>Income Tax A/c No.:</strong> AABCE1743J
             </td>
         </tr>
         <tr>
-            <td colspan="4">
+              <td colspan="4">
                 <strong>Consignee:</strong><br>
-                {{customer}}<br>
-                {{customer_address | safe}}
+                <span id="customer_name_placeholder">{{customer}}</span> <button class="edit-button" onclick="editCustomerName('customer')">Edit</button><br>
+                <span id="customer_address_placeholder" contenteditable="true">{{ customer_address | safe }}</span><br><button class="edit-button" onclick="editCustomerAddress()">Edit</button><br>
             </td>
             <td colspan="4">
                 <strong>Buyer (if other than consignee):</strong><br>
-                {{shipping_address_name}}<br>
-                {{shipping_address | safe}}
+                <span id="ship_name_placeholder">{{shipping_address_name}}</span> <button class="edit-button" onclick="editField_ship_name('shipping_address_name')">Edit</button><br>
+    <span id="ship_address_placeholder" contenteditable="true">{{ shipping_address | safe}}</span><br><button class="edit-button" onclick="editShippingAddress()">Edit</button><br>
             </td>
         </tr>
         <tr>
             <td colspan="2"><strong>Pre-Carriage by:</strong> ROAD</td>
-            <td colspan="2"><strong>Place of Receipt by Pre-carrier:</strong></td>
+            <td colspan="2">
+                <p id="other_reference_pre_carrier_text"></p> <!-- Placeholder for dynamically generated text -->
+                <p style="display: none;"><input type="text" id="other_reference_pre_carrier_input" name="other_reference_pre_carrier_input" class="no-outline-input1"></p>
+                <button onclick="setotherReferencePre_Carrier()" class="no-print">Place of Receipt by Pre-Carrier:</button></td>
             <td colspan="2"><strong>Country of Origin:</strong> INDIA</td>
-            <td colspan="2"><strong>Country of Final Destination:</strong> {Country}</td>
+            <td colspan="2"><strong>Country of Final Destination:</strong> <span id="country_of_final_destination_placeholder">{{territory}}  </span> <button class="edit-button" onclick="editCountryOfFinalDestination()">Edit</button></td>
         </tr>
         <tr>
-            <td colspan="2"><strong>Vessel/Flight No.:</strong></td>
-            <td colspan="2"><strong>Port of Loading:</strong> {editable_from}</td>
-            <td colspan="2"><strong>Port of Discharge:</strong> {editable_to}</td>
-            <td colspan="2"><strong>Final Destination:</strong> {editable_to}</td>
+            <td colspan="2"><strong>Vessel/Flight No.:</strong> <span id="vessel_placeholder"> NA</span> <button class="edit-button" onclick="editvessel()">Edit</button></td>
+            <td colspan="2"><strong>Port of Loading:</strong> <span id="port_of_loading_placeholder"> NA</span> <button class="edit-button" onclick="editPortOfLoading()">Edit</button></td>
+            <td colspan="2"><strong>Port of Discharge:</strong> <span id="port_of_discharge_placeholder"> NA</span> <button class="edit-button" onclick="editPortOfDischarge()">Edit</button></td>
+            <td colspan="2"><strong>Final Destination:</strong> <span id="final_destination_placeholder">{{territory}}  </span> <button class="edit-button" onclick="editFinalDestination()">Edit</button></td>
         </tr>
         <tr>
             <td colspan="4">
-                <strong>FOB Value for customs purpose Rs.:</strong><br>
-                <strong>Real Value for customs purpose Rs.:</strong><br>
-                <strong>Invoice:</strong><br>
-                <strong>FOB Rs.:</strong><br>
+
+                <strong>FOB Value for customs purpose Rs.:</strong> <span id="fob_value_placeholder"> NA</span> <button class="edit-button" onclick="edit_fob_value()">Edit</button><br>
+                <strong>Real Value for customs purpose Rs.:</strong><span id="real_value_placeholder"> NA</span> <button class="edit-button" onclick="edit_real_value()">Edit</button><br>
+                <strong>Invoice:</strong><br></strong><span id="invoice_placeholder"> NA</span> <button class="edit-button" onclick="invoice_value()">Edit</button><br>
+                <strong>FOB Rs.:</strong><br></strong><span id="fob_placeholder"> NA</span> <button class="edit-button" onclick="fob_value()">Edit</button><br>
             </td>
             <td colspan="4">
-                <strong>C&F Rs.:</strong><br>
-                <strong>CIF Rs.:</strong><br>
-                <strong>Drawback Schedule No.:</strong><br>
-                <strong>Drawback Rate:</strong>
+                <strong>C&F Rs.:</strong><br></strong><span id="caf_placeholder"> NA</span> <button class="edit-button" onclick="caf_value()">Edit</button><br>
+                <strong>CIF Rs.:</strong><br></strong><span id="cif_placeholder"> NA</span> <button class="edit-button" onclick="cif_value()">Edit</button><br>
+                <strong>Drawback Schedule No.:</strong><span id="drawback_schedule_placeholder"> NA</span> <button class="edit-button" onclick="drawback_value()">Edit</button><br>
+                <strong>Drawback Rate:</strong><span id="drawback_rate"> NA</span> <button class="edit-button" onclick="drawback_rate_value()">Edit</button><br>
             </td>
         </tr>
         <tr>
@@ -278,22 +284,23 @@ th {
         <!-- Repeat this block for each item -->
         {% for row in items %}
         <tr class="line-item">
-            <td><span id="index_placeholder">{{ loop.index }}  </span> <button class="edit-button" onclick="editIndex()">Edit</button></td>
-            <td><span id="no_kind_placeholder">{{ no_kind }}  </span> <button class="edit-button" onclick="editNoKind()">Edit</button></td>
-            <td><span id="hsn_placeholder">{{ hsn }}  </span> <button class="edit-button" onclick="editHSN()">Edit</button></td>
-            <td><span id="item_name_placeholder">{{ row['item_name'] }}  </span> <button class="edit-button" onclick="editItemName()">Edit</button></td>
-            <td><span id="qty_placeholder">{{ row['qty'] }}  </span> <button class="edit-button" onclick="editQty()">Edit</button></td>
-            <td><span id="rate_placeholder">{{ row['rate'] }}  </span> <button class="edit-button" onclick="editRate()">Edit</button></td>
-            <td><span id="qty_rate_placeholder">{{ row['qty'] * row['rate'] }}  </span> <button class="edit-button" onclick="editQtyRate()">Edit</button></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{{ row['item_name'] }}</td>
+            <td>{{row['qty']}}</td>
+            <td>{{row['rate']}}</td>
+            <td> {{row['rate']*row['qty']}}</td>
+            <td></td>
         </tr>
         {% endfor %}
         <!-- End repeat -->
-        <tr>
+          <tr>
             <td colspan="2" rowspan="3">
-                <strong>Net Wt:</strong> {{total_net_weight}} KGS <br>
+                <strong>Net Wt:</strong> <span id="net_weight_placeholder">{{total_net_weight}}  </span> <button class="edit-button" onclick="editNet()">Edit</button> KGS <br>
             </td>
             <td colspan="2" rowspan="3">
-                <strong>Gross Wt:</strong> {{gross}} KGS
+                <strong>Gross Wt:</strong> <span id="gross_weight_placeholder">{{gross}}  </span> <button class="edit-button" onclick="editGross()">Edit</button> KGS
             </td>
             <td colspan="2"><strong>Add: Packing Charges</strong></td>
             <td></td>
@@ -318,6 +325,100 @@ th {
 </div>
 </body>
 <script>
+
+
+      // JavaScript function to handle editing of fields
+    function editPortOfDischarge(field) {
+        var newValue = prompt('Enter new value for ' + field + ':', '{{ NA }}');
+        if (newValue !== null) {
+            // Update the placeholder with the new value
+            document.getElementById('port_of_discharge_placeholder').innerText = newValue;
+            // Optionally, you can also send the new value to the server via AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/update_port_of_discharge", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("new_po_no=" + newValue);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Optionally, you can handle the response from the server
+                    console.log('Value updated successfully');
+                }
+            };
+        }
+    }
+
+  // JavaScript function to handle editing of fields
+    function editPortOfLoading(field) {
+        var newValue = prompt('Enter new value for ' + field + ':', 'NA');
+        if (newValue !== null) {
+            // Update the placeholder with the new value
+            document.getElementById('port_of_loading_placeholder').innerText = newValue;
+            // Optionally, you can also send the new value to the server via AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/update_port_of_loading", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("new_port_of_loading=" + newValue);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Optionally, you can handle the response from the server
+                    console.log('Value updated successfully');
+                }
+            };
+        }
+    }
+
+
+    // JavaScript function to handle editing of fields
+    function editGross(field) {
+        var newValue = prompt('Enter new value for ' + field + ':', '{{ total_gross_weight }}');
+        if (newValue !== null) {
+            // Update the placeholder with the new value
+            document.getElementById('gross_weight_placeholder').innerText = newValue;
+            // Optionally, you can also send the new value to the server via AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/update_gross_weight", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("new_gross_wt=" + newValue);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Optionally, you can handle the response from the server
+                    console.log('Value updated successfully');
+                }
+            };
+        }
+    }
+
+      function setotherReferencePre_Carrier() {
+        var otherreferenceInput = document.getElementById('other_reference_pre_carrier_input');
+        var reference = prompt('Place of Receipt by Pre-carrier:');
+        var otherReferenceText = document.getElementById('other_reference_pre_carrier_text');
+        if (reference !== null) {
+            otherReferenceText.innerHTML = '<b>Place of Receipt by Pre-Carrier: </b><span>' + reference + '</span>';
+            otherreferenceInput.style.display = 'none'; // Hide the input field
+        }
+    }
+
+
+    // JavaScript function to handle editing of fields
+    function editCountryOfFinalDestination(field) {
+        var newValue = prompt('Enter new value for ' + field + ':', '{{ territory }}');
+        if (newValue !== null) {
+            // Update the placeholder with the new value
+            document.getElementById('country_of_final_destination_placeholder').innerText = newValue;
+            // Optionally, you can also send the new value to the server via AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/update_country_of_final_destination", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("new_po_no=" + newValue);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Optionally, you can handle the response from the server
+                    console.log('Value updated successfully');
+                }
+            };
+        }
+    }
+
     window.addEventListener('beforeprint', function() {
     // This is a workaround to set the print scale in browsers that support it
     const printStyle = document.createElement('style');
@@ -328,6 +429,361 @@ th {
     `;
     document.head.appendChild(printStyle);
 });
+
+
+            // JavaScript function to handle editing of fields
+        function editField_po(field) {
+            var newValue = prompt('Enter new value for ' + field + ':', '{{ po_no }}');
+            if (newValue !== null) {
+                // Update the placeholder with the new value
+                document.getElementById('po_no_placeholder').innerText = newValue;
+                // Optionally, you can also send the new value to the server via AJAX
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/update_po_no", true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.send("new_po_no=" + newValue);
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        // Optionally, you can handle the response from the server
+                        console.log('Value updated successfully');
+                    }
+                };
+            }
+        }
+
+    function setotherReference() {
+        var otherreferenceInput = document.getElementById('other_reference_input');
+        var reference = prompt('Enter Other References:');
+        var otherReferenceText = document.getElementById('other_reference_text');
+        if (reference !== null) {
+            otherReferenceText.innerHTML = '<b>Bombay Customs EDP No. AD No.: </b><span>' + reference + '</span>';
+            otherreferenceInput.style.display = 'none'; // Hide the input field
+        }
+    }
+
+    function clearManufactureYear() {
+        var otherReferenceText = document.getElementById('other_reference_text');
+        otherReferenceText.innerHTML = ''; // Clear the text
+        document.getElementById('other_reference_input').value = ''; // Clear the input field value
+        document.getElementById('other_reference_input').style.display = 'inline'; // Show the input field
+    }
+
+
+    function editCustomerName(field) {
+            var newValue = prompt('Enter new value for ' + field + ':', '{{ customer }}');
+            if (newValue !== null) {
+                // Update the placeholder with the new value
+                document.getElementById('customer_name_placeholder').innerText = newValue;
+                // Optionally, you can also send the new value to the server via AJAX
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/update_customer_name", true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.send("new_customer_name=" + newValue);
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        // Optionally, you can handle the response from the server
+                        console.log('Value updated successfully');
+                    }
+                };
+            }
+        }
+
+
+    function editCustomerAddress() {
+        var addressSpan = document.getElementById("customer_address_placeholder");
+        var currentAddress = addressSpan.innerHTML.trim();
+        var newAddress = prompt("Enter new customer address:", currentAddress);
+
+        if (newAddress !== null && newAddress !== "") {
+            addressSpan.innerHTML = newAddress;
+            // You may also want to send an AJAX request to update the shipping address in the backend
+        }
+    }
+
+
+
+    function editField_ship_name(field) {
+            var newValue = prompt('Enter new value for ' + field + ':', '{{ shipping_address_name }}');
+            if (newValue !== null) {
+                // Update the placeholder with the new value
+                document.getElementById('ship_name_placeholder').innerText = newValue;
+                // Optionally, you can also send the new value to the server via AJAX
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/update_ship_name", true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.send("new_ship_name=" + newValue);
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        // Optionally, you can handle the response from the server
+                        console.log('Value updated successfully');
+                    }
+                };
+            }
+        }
+
+    function editShippingAddress() {
+        var addressSpan = document.getElementById("ship_address_placeholder");
+        var currentAddress = addressSpan.innerHTML.trim();
+        var newAddress = prompt("Enter new shipping address:", currentAddress);
+
+        if (newAddress !== null && newAddress !== "") {
+            addressSpan.innerHTML = newAddress;
+            // You may also want to send an AJAX request to update the shipping address in the backend
+        }
+    }
+
+
+
+      // JavaScript function to handle editing of fields
+    function editNet(field) {
+        var newValue = prompt('Enter new value for ' + field + ':', '{{ total_net_weight }}');
+        if (newValue !== null) {
+            // Update the placeholder with the new value
+            document.getElementById('net_weight_placeholder').innerText = newValue;
+            // Optionally, you can also send the new value to the server via AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/update_net_weight", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("new_net_wt=" + newValue);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Optionally, you can handle the response from the server
+                    console.log('Value updated successfully');
+                }
+            };
+        }
+    }
+
+
+     // JavaScript function to handle editing of fields
+    function editvessel(field) {
+        var newValue = prompt('Enter new value for ' + field + ':', 'NA');
+        if (newValue !== null) {
+            // Update the placeholder with the new value
+            document.getElementById('vessel_placeholder').innerText = newValue;
+            // Optionally, you can also send the new value to the server via AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/update_port_of_loading", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("new_port_of_loading=" + newValue);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Optionally, you can handle the response from the server
+                    console.log('Value updated successfully');
+                }
+            };
+        }
+    }
+
+
+
+          // JavaScript function to handle editing of fields
+    function edit_fob_value(field) {
+        var newValue = prompt('Enter new value for ' + field + ':', '{{ NA }}');
+        if (newValue !== null) {
+            // Update the placeholder with the new value
+            document.getElementById('fob_value_placeholder').innerText = newValue;
+            // Optionally, you can also send the new value to the server via AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/update_final_destination", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("new_po_no=" + newValue);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Optionally, you can handle the response from the server
+                    console.log('Value updated successfully');
+                }
+            };
+        }
+    }
+
+
+
+
+              // JavaScript function to handle editing of fields
+    function editFinalDestination(field) {
+        var newValue = prompt('Enter new value for ' + field + ':', '{{ territory }}');
+        if (newValue !== null) {
+            // Update the placeholder with the new value
+            document.getElementById('final_destination_placeholder').innerText = newValue;
+            // Optionally, you can also send the new value to the server via AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/update_final_destination", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("new_po_no=" + newValue);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Optionally, you can handle the response from the server
+                    console.log('Value updated successfully');
+                }
+            };
+        }
+    }
+
+
+
+         // JavaScript function to handle editing of fields
+    function edit_real_value(field) {
+        var newValue = prompt('Enter new value for ' + field + ':', '{{ NA }}');
+        if (newValue !== null) {
+            // Update the placeholder with the new value
+            document.getElementById('real_value_placeholder').innerText = newValue;
+            // Optionally, you can also send the new value to the server via AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/update_final_destination", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("new_po_no=" + newValue);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Optionally, you can handle the response from the server
+                    console.log('Value updated successfully');
+                }
+            };
+        }
+    }
+
+
+      // JavaScript function to handle editing of fields
+    function invoice_value(field) {
+        var newValue = prompt('Enter new value for ' + field + ':', '{{ NA }}');
+        if (newValue !== null) {
+            // Update the placeholder with the new value
+            document.getElementById('invoice_placeholder').innerText = newValue;
+            // Optionally, you can also send the new value to the server via AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/update_final_destination", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("new_po_no=" + newValue);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Optionally, you can handle the response from the server
+                    console.log('Value updated successfully');
+                }
+            };
+        }
+    }
+
+
+    // JavaScript function to handle editing of fields
+    function drawback_rate_value(field) {
+        var newValue = prompt('Enter new value for ' + field + ':', '{{ NA }}');
+        if (newValue !== null) {
+            // Update the placeholder with the new value
+            document.getElementById('drawback_rate').innerText = newValue;
+            // Optionally, you can also send the new value to the server via AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/update_final_destination", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("new_po_no=" + newValue);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Optionally, you can handle the response from the server
+                    console.log('Value updated successfully');
+                }
+            };
+        }
+    }
+
+
+
+
+
+    // JavaScript function to handle editing of fields
+    function cif_value(field) {
+        var newValue = prompt('Enter new value for ' + field + ':', '{{ NA }}');
+        if (newValue !== null) {
+            // Update the placeholder with the new value
+            document.getElementById('cif_placeholder').innerText = newValue;
+            // Optionally, you can also send the new value to the server via AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/update_final_destination", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("new_po_no=" + newValue);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Optionally, you can handle the response from the server
+                    console.log('Value updated successfully');
+                }
+            };
+        }
+    }
+
+
+
+    // JavaScript function to handle editing of fields
+    function caf_value(field) {
+        var newValue = prompt('Enter new value for ' + field + ':', '{{ NA }}');
+        if (newValue !== null) {
+            // Update the placeholder with the new value
+            document.getElementById('caf_placeholder').innerText = newValue;
+            // Optionally, you can also send the new value to the server via AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/update_final_destination", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("new_po_no=" + newValue);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Optionally, you can handle the response from the server
+                    console.log('Value updated successfully');
+                }
+            };
+        }
+    }
+
+
+
+
+        // JavaScript function to handle editing of fields
+    function fob_value(field) {
+        var newValue = prompt('Enter new value for ' + field + ':', '{{ NA }}');
+        if (newValue !== null) {
+            // Update the placeholder with the new value
+            document.getElementById('fob_placeholder').innerText = newValue;
+            // Optionally, you can also send the new value to the server via AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/update_final_destination", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("new_po_no=" + newValue);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Optionally, you can handle the response from the server
+                    console.log('Value updated successfully');
+                }
+            };
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+         // JavaScript function to handle editing of fields
+    function drawback_value(field) {
+        var newValue = prompt('Enter new value for ' + field + ':', '{{ NA }}');
+        if (newValue !== null) {
+            // Update the placeholder with the new value
+            document.getElementById('drawback_schedule_placeholder').innerText = newValue;
+            // Optionally, you can also send the new value to the server via AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/update_final_destination", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("new_po_no=" + newValue);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Optionally, you can handle the response from the server
+                    console.log('Value updated successfully');
+                }
+            };
+        }
+    }
+
+
+
 
 </script>
 </html>
