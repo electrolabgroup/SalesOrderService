@@ -35,8 +35,10 @@ table tr:last-child td {
     .container {
         position: absolute;
         left: 0;
+        right: 0;
         top: 0;
-        width: 310mm; /* A4 width */
+        bottom: 0;
+        width: 300mm; /* A4 width */
         min-height: 297mm; /* A4 height */
         padding: 3mm; /* Padding to ensure content is not too close to the edges */
         box-sizing: border-box; /* Ensure padding is included in the width */
@@ -82,8 +84,8 @@ table tr:last-child td {
             font-size: 0.7em; /* Reduce font size for the entire body */
         }
 
-                .container {
-            width: 240mm; /* A4 width */
+         .container {
+            width: 320mm; /* A4 width */
 
             margin: 0 auto; /* Center on the page */
             padding: 10mm; /* Margin from the edge of the paper */
@@ -92,6 +94,7 @@ table tr:last-child td {
 
 
         }
+
         h1 {
             text-align: center;
             text-transform: uppercase;
@@ -138,30 +141,18 @@ table tr:last-child td {
         }
 
         button {
-            padding: 10px 20px;
+            padding: 5px 10px; /* Adjusted button padding */
             background-color: #008080;
             color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-right: 10px;
+            margin-right: 6px; /* Reduced margin for buttons */
         }
+
         button:hover {
             background-color: #0056b3;
         }
-        .no-outline-input1 {
-            display: none; /* Initially hide the input field */
-            border: none;
-            border-bottom: 1px solid transparent;
-            outline: none;
-            font-size: inherit;
-            font-family: inherit;
-            color: inherit;
-            background: transparent;
-            width: 100px; /* Increase width for input field */
-            text-align: center;
-        }
-
 
         .letterhead-row {
             display: none; /* Hide the letterhead row by default */
@@ -194,15 +185,10 @@ th {
 
 
 .line-item td {
-        border-top: none; /* Remove top border */
-        border-bottom: none; /* Add bottom border */
+        border-top: True; /* Remove top border */
+        border-bottom: True; /* Add bottom border */
     }
-}
-@page {
-    size: A4;
-    margin: 3mm;
-    transform: scale(1.5);
-}
+
 
     </style>
 </head>
@@ -273,6 +259,7 @@ th {
             </td>
         </tr>
         <tr>
+
             <th>Marks & Nos./ Container No.</th>
             <th>No. & Kind of Pkgs.</th>
             <th>HSN CODE</th>
@@ -291,7 +278,7 @@ th {
         <td contenteditable="true">{{ row['qty'] }}</td>
         <td contenteditable="true">{{ row['rate'] }}</td>
         <td contenteditable="true">{{ row['rate'] * row['qty'] }}</td>
-        <td contenteditable="true"></td>
+
     </tr>
     {% endfor %}
         <!-- End repeat -->
