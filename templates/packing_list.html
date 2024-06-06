@@ -91,7 +91,7 @@
     <h1>Packing List</h1>
     <table> 
         <tr>
-            <td colspan="4" class="small-text">
+            <td colspan="4" class="small-text" contenteditable="true">
                 <strong>Exporter:</strong><br>
                 Electrolab India Pvt Ltd<br>
                 GR/1ST Floor, EL-23/24,<br>
@@ -100,39 +100,39 @@
                 Tel No.:- 91-22-41613131<br>
                 Fax No:- 91-22-41613199
             </td>
-            <td colspan="4" class="small-text">
+            <td colspan="4" class="small-text" contenteditable="true">
                 <strong>Packing List No. & Date:</strong><br>
                 <strong>Buyer’s Order No:</strong> {{po_no}}<br>
                 <strong>Other Reference(s):</strong>
             </td>
         </tr>
         <tr>
-            <td colspan="4" class="small-text">
+            <td colspan="4" class="small-text" contenteditable="true">
                 <strong>Consignee:</strong><br>
                 {{customer}}<br>
                 {{shipping_address | safe}}
             </td>
-            <td colspan="4" class="small-text">
+            <td colspan="4" class="small-text" contenteditable="true">
                 <strong>Buyer (if other than consignee):</strong><br>
                 {{customer}}<br>
                 {{customer_address | safe}}
             </td>
         </tr>
         <tr>
-            <td colspan="2"><strong>Pre-Carriage by:</strong> ROAD</td>
-            <td colspan="2"><strong>Place of Receipt by Pre-carrier:</strong></td>
-            <td colspan="2"><strong>Country of Origin:</strong> INDIA</td>
-            <td colspan="2"><strong>Country of Final Destination:</strong> {{territory}}</td>
+            <td colspan="2" contenteditable="true"><strong>Pre-Carriage by:</strong> ROAD</td>
+            <td colspan="2" contenteditable="true"><strong>Place of Receipt by Pre-carrier:</strong></td>
+            <td colspan="2" contenteditable="true"><strong>Country of Origin:</strong> INDIA</td>
+            <td colspan="2" contenteditable="true"><strong>Country of Final Destination:</strong> {{territory}}</td>
         </tr>
         <tr>
-            <td colspan="2"><strong>Vessel/Flight No.:</strong></td>
-            <td colspan="2"><strong>Port of Loading:</strong> {{shipping_from}}</td>
-            <td colspan="2"><strong>Terms of Delivery:</strong> {{freight_term}}</td>
-            <td colspan="2"><strong>Port of Discharge:</strong> {{territory}}</td>
+            <td colspan="2" contenteditable="true"><strong>Vessel/Flight No.:</strong></td>
+            <td colspan="2" contenteditable="true"><strong>Port of Loading:</strong> {{shipping_from}}</td>
+            <td colspan="2" contenteditable="true"><strong>Terms of Delivery:</strong> {{freight_term}}</td>
+            <td colspan="2" contenteditable="true"><strong>Port of Discharge:</strong> {{territory}}</td>
         </tr>
         <tr>
-            <td colspan="4"><strong>Final Destination:</strong> {{territory}}</td>
-            <td colspan="4"><strong>Terms of Payment:</strong> {{payment_terms_template}}</td>
+            <td colspan="4" contenteditable="true"><strong>Final Destination:</strong> {{territory}}</td>
+            <td colspan="4" contenteditable="true"><strong>Terms of Payment:</strong> {{payment_terms_template}}</td>
         </tr>
         <tr>
             <th>Marks & Nos./ Container No.</th>
@@ -147,25 +147,25 @@
         <!-- Repeat this block for each item -->
          {% for row in items %}
         <tr class="line-item">
-            <td></td>
-            <td></td>
-            <td>{{ row['item_name'] }}</td>
-            <td>{{ row['qty'] }}</td>
-            <td></td>
-            <td>0.00</td>
-            <td>0.00</td>
-            <td>0.00</td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true">{{ row['item_name'] }}</td>
+            <td contenteditable="true">{{ row['qty'] }}</td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true">0.00</td>
+            <td contenteditable="true">0.00</td>
+            <td contenteditable="true">0.00</td>
         </tr>
         {% endfor %}
         <!-- End repeat -->
         <tr>
-            <td colspan="5"><strong>Total Net Wt. & Gross Wt.</strong></td>
-            <td>0.00</td>
-            <td>0.00</td>
-            <td>0.00</td>
+            <td colspan="5" contenteditable="true"><strong>Total Net Wt. & Gross Wt.</strong></td>
+            <td contenteditable="true">0.00</td>
+            <td contenteditable="true">0.00</td>
+            <td contenteditable="true">0.00</td>
         </tr>
         <tr>
-            <td colspan="8">
+            <td colspan="8" contenteditable="true">
                 <ul type="disc">
                     <li><strong>Net Weight:</strong> {{editable}}Kgs</li>
                     <li><strong>Gross Weight:</strong> {{editable}} Kgs</li>

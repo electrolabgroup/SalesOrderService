@@ -204,7 +204,7 @@ th {
             </tr>
 
             <tr>
-                <td colspan="7"><br>
+                <td colspan="7" contenteditable="true"><br>
                     <strong>Exporter:</strong><br>
                     Electrolab India Pvt Ltd<br>
                     GR/1ST Floor, EL-23/24,<br>
@@ -213,7 +213,7 @@ th {
                     Tel No.:- 91-22-41613131<br>
                     Fax No:- 91-22-41613199
                 </td>
-                <td colspan="7">
+                <td colspan="7" contenteditable="true">
                     <strong>Commercial Invoice No. & Date:</strong><br><br>
 
                     <strong>Buyer’s Order No:</strong> <span id="po_no_placeholder">{{ po_no }}</span> <button class="edit-button" onclick="editField_po('po_no')">Edit</button>
@@ -237,19 +237,19 @@ th {
                 </td>
             </tr>
             <tr>
-                <td colspan="4"><strong>Pre-Carriage by:</strong> ROAD</td>
+                <td colspan="4" contenteditable="true"><strong>Pre-Carriage by:</strong> ROAD</td>
                 <td colspan="4">
                     <p id="other_reference_pre_carrier_text"></p> <!-- Placeholder for dynamically generated text -->
                     <p style="display: none;"><input type="text" id="other_reference_pre_carrier_input" name="other_reference_pre_carrier_input" class="no-outline-input1"></p>
                     <button onclick="setotherReferencePre_Carrier()" class="no-print">Place of Receipt by Pre-carrier:</button></td>
-                <td colspan="4"><strong>Country of Origin:</strong> INDIA</td>
-                <td colspan="4"><strong>Country of Final Destination:</strong> <span id="country_of_final_destination_placeholder">{{territory}}  </span> <button class="edit-button" onclick="editCountryOfFinalDestination()">Edit</button></td>
+                <td colspan="4" contenteditable="true"><strong>Country of Origin:</strong> INDIA</td>
+                <td colspan="4" contenteditable="true"><strong>Country of Final Destination:</strong> <span id="country_of_final_destination_placeholder">{{territory}}  </span> <button class="edit-button" onclick="editCountryOfFinalDestination()">Edit</button></td>
             </tr>
             <tr>
-                <td colspan="4"><strong>Vessel/Flight No.:</strong></td>
-                <td colspan="4"><strong>Port of Loading:</strong> {Shipping From}</td>
-                <td colspan="4"><strong>Terms of Delivery:</strong> <span id="freight_terms_placeholder">{{freight_term}}  </span> <button class="edit-button" onclick="editFreightTerms()">Edit</button></td>
-                <td colspan="4"><strong>Port of Discharge:</strong> <span id="port_of_discharge_placeholder">{{territory}}  </span> <button class="edit-button" onclick="editPortOfDischarge()">Edit</button></td>
+                <td colspan="4" contenteditable="true"><strong>Vessel/Flight No.:</strong></td>
+                <td colspan="4" contenteditable="true"><strong>Port of Loading:</strong> </td>
+                <td colspan="4" contenteditable="true"><strong>Terms of Delivery:</strong> <span id="freight_terms_placeholder">{{freight_term}}  </span> <button class="edit-button" onclick="editFreightTerms()">Edit</button></td>
+                <td colspan="4" contenteditable="true"><strong>Port of Discharge:</strong> <span id="port_of_discharge_placeholder">{{territory}}  </span> <button class="edit-button" onclick="editPortOfDischarge()">Edit</button></td>
             </tr>
             <tr>
                 <td colspan="7"><strong>Final Destination:</strong> <span id="final_destination_placeholder">{{territory}}  </span> <button class="edit-button" onclick="editFinalDestination()">Edit</button></td>
@@ -267,14 +267,14 @@ th {
             </tr>
             {% for row in items %}
             <tr class="line-item">
-    <td>{{ loop.index }}</td>
-    <td>{{ no_kind }}</td>
-    <td>{{ hsn }}</td>
-    <td colspan="6">{{ row['item_name'] }}</td>
-    <td>{{ row['qty'] }}</td>
-    <td>{{ unit }}</td>
-    <td>{{ row['rate'] }}</td>
-    <td>{{ row['qty'] * row['rate'] }}</td>
+    <td contenteditable="true">{{ loop.index }}</td>
+    <td contenteditable="true">{{ no_kind }}</td>
+    <td contenteditable="true">{{ hsn }}</td>
+    <td colspan="6" contenteditable="true">{{ row['item_name'] }}</td>
+    <td contenteditable="true">{{ row['qty'] }}</td>
+    <td contenteditable="true">{{ unit }}</td>
+    <td contenteditable="true">{{ row['rate'] }}</td>
+    <td contenteditable="true">{{ row['qty'] * row['rate'] }}</td>
 </tr>
 
             {% endfor %}
@@ -291,47 +291,47 @@ th {
                         </tr>
                         <tr class="small-height">
                             <td style="border: none;"><b>USD A/C NO. :</b></td>
-                            <td style="border: none;">9211358795</td>
+                            <td style="border: none;" contenteditable="true">9211358795</td>
                             <td style="border: none;"><b>Permanent A/C NO. :</b></td>
-                            <td style="border: none;">AABCE1743J</td>
+                            <td style="border: none;" contenteditable="true">AABCE1743J</td>
                         </tr>
                         <tr class="small-height">
                             <td style="border: none;"><b>Swift Address:</b></td>
-                            <td style="border: none;">KKBKINBB</td>
+                            <td style="border: none;" contenteditable="true">KKBKINBB</td>
                             <td style="border: none;"><b>GST TIN No. :</b></td>
-                            <td style="border: none;">27AABCE1743J1ZQ</td>
+                            <td style="border: none;" contenteditable="true">27AABCE1743J1ZQ</td>
                         </tr>
                         <tr class="small-height">
                             <td style="border: none;"><b>AD Code No. :</b></td>
-                            <td style="border: none;">0180156-6010488</td>
+                            <td style="border: none;" contenteditable="true">0180156-6010488</td>
                             <td style="border: none;"><b>End Use Code :</b></td>
-                            <td style="border: none;">GNX810</td>
+                            <td style="border: none;" contenteditable="true">GNX810</td>
                         </tr>
                         <tr class="small-height">
                             <td style="border: none;"><b>IEC Code:</b></td>
-                            <td style="border: none;">0306042673</td>
+                            <td style="border: none;" contenteditable="true">0306042673</td>
                             <td style="border: none;"><b>LUT ARN NO. :</b></td>
-                            <td style="border: none;">AD2703230407919 Dt. 23.03.2023</td>
+                            <td style="border: none;" contenteditable="true">AD2703230407919 Dt. 23.03.2023</td>
                         </tr>
                     </table>
                 </td>
                 <td colspan="4"><strong>Add: Packing Charges</strong></td>
-                <td>{{packing_charges}}</td>
-                <td>0.00</td>
+                <td contenteditable="true">{{packing_charges}}</td>
+                <td contenteditable="true">0.00</td>
             </tr>
             <tr>
                 <td colspan="4"><strong>Add: Freight Charges</strong></td>
-                <td>{{freight_amt}}</td>
-                <td>0.00</td>
+                <td contenteditable="true">{{freight_amt}}</td>
+                <td contenteditable="true">0.00</td>
             </tr>
             <tr>
                 <td colspan="7"><strong>Amount Chargeable (in words):</strong></td>
                 <td colspan="4"><strong>Total:</strong></td>
                 <td></td>
-                <td>0.00</td>
+                <td contenteditable="true">0.00</td>
             </tr>
             <tr>
-                <td colspan="14">
+                <td colspan="14" contenteditable="true">
                     <ul type="disc">
                         <li>We declare that this invoice shows the actual price of the Goods described and that all particulars are true and correct.</li>
                         <li>We intend to claim remission of duties and taxes on exported products (RODTEP) Scheme.</li>

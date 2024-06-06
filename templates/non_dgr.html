@@ -202,9 +202,9 @@ th {
             <th>Airport for Destination</th>
         </tr>
         <tr>
-            <td></td>
-            <td>{Shipping From}</td>
-            <td>{Shipping To}</td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
         </tr>
     </table>
     <p>
@@ -219,16 +219,16 @@ th {
         <!-- Repeat this block for each item -->
          {% for row in items %}
         <tr class="line-item">
-            <td> </td>
-            <td>{{ row['item_name'] }}</td>
-            <td>{{ row['qty'] }}</td>
+            <td contenteditable="true"> </td>
+            <td contenteditable="true">{{ row['item_name'] }}</td>
+            <td contenteditable="true">{{ row['qty'] }}</td>
 
         </tr>
         {% endfor %}
         <!-- End repeat -->
         <tr>
             <td colspan="2" style="text-align: right;"><strong>Total</strong></td>
-            <td>0.00</td>
+            <td contenteditable="true">0.00</td>
         </tr>
     </table>
     <div class="footer">

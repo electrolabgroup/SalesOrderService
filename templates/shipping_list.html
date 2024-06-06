@@ -211,14 +211,14 @@ th {
     <h1>Shipping Instruction</h1>
     <table>
         <tr>
-            <td colspan="4">
+            <td colspan="4" contenteditable="true">
                 <strong>Exporter:</strong><br><br>
                 Electrolab India Pvt Ltd<br>
                 EL 23/24, T.T.C Electronic Zone, <br>
                 MIDC, Mahape, Navi Mumbai - 400 710,<br>
                 India Tel No. 91-22-41613131<br>
             </td>
-            <td colspan="4">
+            <td colspan="4" contenteditable="true">
                 <br>
                 <strong>Commercial Invoice No. & Date:</strong><br><br>
                 <strong>Buyer’s Order No:</strong> <span id="po_no_placeholder">{{ po_no }}</span> <button class="edit-button" onclick="editField_po('po_no')">Edit</button><br>
@@ -231,19 +231,19 @@ th {
             </td>
         </tr>
         <tr>
-              <td colspan="4">
+              <td colspan="4" contenteditable="true">
                 <strong>Consignee:</strong><br>
-                <span id="customer_name_placeholder">{{customer}}</span> <button class="edit-button" onclick="editCustomerName('customer')">Edit</button><br>
-                <span id="customer_address_placeholder" contenteditable="true">{{ customer_address | safe }}</span><br><button class="edit-button" onclick="editCustomerAddress()">Edit</button><br>
+                <span id="customer_name_placeholder">{{customer}}</span> <br>
+                <span id="customer_address_placeholder" contenteditable="true">{{ customer_address | safe }}</span><br><br>
             </td>
-            <td colspan="4">
+            <td colspan="4" contenteditable="true">
                 <strong>Buyer (if other than consignee):</strong><br>
-                <span id="ship_name_placeholder">{{shipping_address_name}}</span> <button class="edit-button" onclick="editField_ship_name('shipping_address_name')">Edit</button><br>
-    <span id="ship_address_placeholder" contenteditable="true">{{ shipping_address | safe}}</span><br><button class="edit-button" onclick="editShippingAddress()">Edit</button><br>
+                <span id="ship_name_placeholder">{{shipping_address_name}}</span><br>
+    <span id="ship_address_placeholder" contenteditable="true">{{ shipping_address | safe}}</span><br>
             </td>
         </tr>
         <tr>
-            <td colspan="2"><strong>Pre-Carriage by:</strong> ROAD</td>
+            <td colspan="2" contenteditable="true"><strong>Pre-Carriage by:</strong> ROAD</td>
             <td colspan="2">
                 <p id="other_reference_pre_carrier_text"></p> <!-- Placeholder for dynamically generated text -->
                 <p style="display: none;"><input type="text" id="other_reference_pre_carrier_input" name="other_reference_pre_carrier_input" class="no-outline-input1"></p>
@@ -282,18 +282,18 @@ th {
             <th>Amount in {{currency}}</th>
         </tr>
         <!-- Repeat this block for each item -->
-        {% for row in items %}
-        <tr class="line-item">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>{{ row['item_name'] }}</td>
-            <td>{{row['qty']}}</td>
-            <td>{{row['rate']}}</td>
-            <td> {{row['rate']*row['qty']}}</td>
-            <td></td>
-        </tr>
-        {% endfor %}
+         {% for row in items %}
+    <tr class="line-item">
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true">{{ row['item_name'] }}</td>
+        <td contenteditable="true">{{ row['qty'] }}</td>
+        <td contenteditable="true">{{ row['rate'] }}</td>
+        <td contenteditable="true">{{ row['rate'] * row['qty'] }}</td>
+        <td contenteditable="true"></td>
+    </tr>
+    {% endfor %}
         <!-- End repeat -->
           <tr>
             <td colspan="2" rowspan="3">
