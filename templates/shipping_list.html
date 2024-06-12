@@ -273,7 +273,7 @@ th {
     <tr class="line-item">
         <td contenteditable="true"></td>
         <td contenteditable="true"></td>
-        <td contenteditable="true"></td>
+        <td contenteditable="true">{{row['gst_hsn_code']}}</td>
         <td contenteditable="true">{{ row['item_name'] }}</td>
         <td contenteditable="true">{{ row['qty'] }}</td>
         <td contenteditable="true">{{ row['rate'] }}</td>
@@ -290,20 +290,20 @@ th {
                 <strong>Gross Wt:</strong> <span id="gross_weight_placeholder">{{gross}}  </span> <button class="edit-button" onclick="editGross()">Edit</button> KGS
             </td>
             <td colspan="2"><strong>Add: Packing Charges</strong></td>
-            <td></td>
+            <td contenteditable="true"></td>
         </tr>
         <tr>
             <td colspan="2"><strong>Add: Wire/Bank Charges</strong></td>
-            <td></td>
+            <td contenteditable="true"></td>
         </tr>
         <tr>
             <td colspan="2"><strong>Add: Freight Charges</strong></td>
-            <td>{{freight_amt}}</td>
+            <td contenteditable="true">{{freight_amt}}</td>
         </tr>
-        <tr>
-            <td colspan="4"><strong>Total:</strong></td>
-            <td colspan="2"></td>
-            <td></td>
+        <tr><td colspan="4" contenteditable="true"></td>
+            <td colspan="2"  contenteditable="true"><strong>Total:</strong></td>
+            <td contenteditable="true"></td>
+
         </tr>
     </table>
     <div class="footer">

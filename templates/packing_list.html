@@ -62,8 +62,8 @@
             word-wrap: break-word;
         }
         th {
-            background-color: #000;
-            color: #ffffff;
+            background-color: #ffffff;
+            color: #000;
         }
         .footer {
             text-align: center;
@@ -146,7 +146,7 @@
         </tr>
         <!-- Repeat this block for each item -->
          {% for row in items %}
-        <tr class="line-item">
+        <tr>
             <td contenteditable="true"></td>
             <td contenteditable="true"></td>
             <td contenteditable="true">{{ row['item_name'] }}</td>

@@ -31,7 +31,7 @@
             color: white;
             padding: 10px 20px;
             text-decoration: none;
-            border-radius: 4px;
+            border-radius: 3px;
         }
         a.button:hover {
             background-color: #005353;
@@ -72,16 +72,28 @@
         </form>
 
         {% if item_names %}
-        <form action="/print_certificate" method="post">
-            <input type="hidden" id="name" name="name" value="{{ request.form['name'] }}" required>
-            <label for="selected_item_name">Select Item:</label>
-            <select id="selected_item_name" name="selected_item_name">
-                {% for item_name in item_names %}
-                <option value="{{ item_name }}">{{ item_name }}</option>
-                {% endfor %}
-            </select>
-            <button type="submit" name="print_certificate">Quality Certificate</button>
-        </form>
+<form id="certificateForm" action="/print_certificate" method="post">
+    <input type="hidden" id="name" name="name" value="{{ request.form['name'] }}" required>
+    <label for="selected_item_name">Select Item:</label>
+    <select id="selected_item_name" name="selected_item_name">
+        {% for item_name in item_names %}
+        <option value="{{ item_name }}">{{ item_name }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit" id="certificateButton" name="print_certificate">Quality Certificate</button>
+    <button type="submit" id="stickerButton" name="print_sticker">Item Label</button>
+</form>
+
+<script>
+    document.getElementById('certificateButton').addEventListener('click', function() {
+        document.getElementById('certificateForm').action = '/print_certificate';
+    });
+
+    document.getElementById('stickerButton').addEventListener('click', function() {
+        document.getElementById('certificateForm').action = '/print_sticker';
+    });
+</script>
+
 
 <div class="form-container">
     <form action="/print_si" method="post" class="inline-form">
@@ -96,8 +108,14 @@
 
     <form action="/packing_list" method="post" class="inline-form">
         <input type="hidden" name="name" value="{{ request.form['name'] }}" required>
-        <button type="submit" name="print_pl">Packing List</button>
+        <button type="submit" name="print_pl">Packing List(Export)</button>
     </form>
+
+     <form action="/packing_list_spares" method="post" class="inline-form">
+        <input type="hidden" name="name" value="{{ request.form['name'] }}" required>
+        <button type="submit" name="print_scomet">Packing List(Domestic)</button>
+    </form>
+
 
     <form action="/non_dgr" method="post" class="inline-form">
         <input type="hidden" name="name" value="{{ request.form['name'] }}" required>
@@ -145,6 +163,15 @@
         {% if pl_content %}
         <div>
             {{ pl_content | safe }}
+        </div>
+        <br>
+        <a href="/" class="button">Back to Search</a>
+        {% endif %}
+
+
+            {% if pl_content_spares %}
+        <div>
+            {{ pl_content_spares | safe }}
         </div>
         <br>
         <a href="/" class="button">Back to Search</a>

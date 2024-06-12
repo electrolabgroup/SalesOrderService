@@ -3,103 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Certificate of Quality</title>
-    <style>
-        /* Define styles for printing */
+    <title>Document</title>
+            <style>
         @media print {
-            body * {
-                visibility: hidden;
-            }
-            .container, .container * {
-                visibility: visible;
-            }
-            .container {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 210mm; /* Ensure it fits A4 width */
-                height: 250mm; /* Ensure it fits A4 height */
-                overflow: hidden; /* Prevent overflow to next page */
-            }
+    @page {
+        margin: 0; /* Remove default page margins */
+        padding: 0; /* Remove default page padding */
+    }
+
+    body * {
+        visibility: hidden;
+    }
+
+    .container, .container * {
+        visibility: visible;
+    }
+
+    .container {
+        position: absolute;
+        left: 0mm;
+        right: 0mm;
+        font-family: Arial, sans-serif;
+        bottom: 0;
+        width: 90mm; /* Set to 90mm */
+        min-height: 29mm; /* Set to 29mm */
+        font-size: 13pt;
+        margin: 0;
+        padding: 0;
+        border: none;
+        page-break-after: always; /* Ensure the container starts a new page */
+    }
+
             .footer {
                 display: none;
             }
             .no-print {
                 display: none !important; /* Hide elements with class 'no-print' */
             }
+            table {
+                width: 100%; /* Ensure the table fits within the container */
+                border-collapse: collapse; /* Ensure no extra spacing in table */
+                margin: 0;
+                padding: 0;
+            }
+            tr, td, th {
+                page-break-inside: avoid; /* Avoid breaking table row inside */
+            }
+            td, th {
+                word-wrap: break-word; /* Break long words to prevent overflow */
+                padding: 0;
+                margin: 0;
+            }
+            .edit-button {
+                display: none !important; /* Hide elements with class 'no-print' */
+            }
+            .letterhead-row {
+                display: table-row !important; /* Ensure the letterhead row is displayed in print */
+            }
+            .line-item.page-break-bottom td {
+                border-bottom: none; /* Remove bottom border for label */
+            }
         }
-        body {
+
+            .container {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4; /* Light background to distinguish container */
-        }
-        .container {
-            width: 210mm; /* A4 width */
-            height: 250mm; /* A4 height */
+            width: 130mm; /* A4 width */
+            height: 29mm; /* A4 height */
             margin: 0 auto; /* Center on the page */
             padding: 10mm; /* Margin from the edge of the paper */
-            border: 2px solid #00AB9F;
             border-radius: 10px;
             background-color: #ffffff;
 
         }
-
-
-        h2 {
-            text-align: center;
-            text-transform: uppercase;
-            margin-bottom: 30px;
-            color: #00AB9F;
-        }
-        p {
-            margin-bottom: 15px;
-            text-align: justify; /* Align text as justified */
-        }
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #008080;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-right: 10px;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .no-outline-input1 {
-            display: none; /* Initially hide the input field */
-            border: none;
-            border-bottom: 1px solid transparent;
-            outline: none;
-            font-size: inherit;
-            font-family: inherit;
-            color: inherit;
-            background: transparent;
-            width: 100px; /* Increase width for input field */
-            text-align: center;
-        }
-
-
     </style>
 </head>
 <body>
 <div class="container">
     <!-- Letterhead Image -->
- <table>
-   <td>
-     <tr></tr>
-     <tr>{{ item_name }}</tr>
-   </td>
- </table>
+   <table>
+        <tr>
+            <td colspan="2" contenteditable="true"><strong>{{customer}}</strong></td>
+        </tr>
+
+        <tr><td contenteditable="true"><strong>PO NO: {{po_no}}</strong> </td></tr>
+       <tr>
+            <td colspan="2" contenteditable="true"><strong>{{item_name}}</strong></td>
+        </tr>
+        <tr><td contenteditable="true"><strong>Part Code: {{item_code}}</strong></td></tr>
+        <tr><td contenteditable="true"><strong>QTY: {{qty}}</strong></td><td rowspan="3"><img src="{{ url_for('static', filename='ELEC.png') }}" alt="Letterhead Image" class="letterhead-img" /></td></tr>
+        <tr><td contenteditable="true"><strong>Sales Order No:{{sales_order}}</strong></td></tr>
+    </table>
+
 
     <div class="footer">
-        <button onclick="window.print()">Print Certificate</button>
+        <button onclick="window.print()">Print Label</button>
     </div>
 </div>
 

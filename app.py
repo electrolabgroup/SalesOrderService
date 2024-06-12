@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, send_from_directory
 import requests
 import pandas as pd
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -18,7 +19,7 @@ def retrieve_data(name):
 
     while True:
         params = {
-            'fields': '["name","customer","items.item_code","items.item_name","items.serial_no","items.item_name","territory","items.qty","address_display","shipping_address","shipping_address_name","po_no","po_date","freight_term","payment_terms_template","currency","items.rate","items.amount","freight_amt","packing_charges","total_net_weight"]',
+            'fields': '["name","customer","items.item_code","items.item_name","items.serial_no","items.item_name","territory","items.qty","address_display","shipping_address","shipping_address_name","po_no","po_date","freight_term","payment_terms_template","currency","items.rate","items.amount","freight_amt","packing_charges","total_net_weight","items.gst_hsn_code","items.uom","total_net_weight","net_total","total"]',
             'limit_start': limit_start,
             'limit_page_length': limit_page_length,
             'filters': f'[["name", "in", "{name}"]]'
@@ -40,6 +41,10 @@ def retrieve_data(name):
 
     if all_data:
         so_df = pd.DataFrame(all_data)
+        # Sort the DataFrame by the 'amount' column in descending order
+        so_df = so_df.sort_values(by='amount', ascending=False)
+        so_df['qty'] = so_df['qty'].round(0).astype(int)
+
         return so_df
     else:
         return None
@@ -130,6 +135,37 @@ def print_certificate():
 
 
 
+@app.route('/print_sticker', methods=['POST'])
+def print_sticker():
+    selected_item_name = request.form.get('selected_item_name', '')
+    name = request.form.get('name', '')
+    so_df = retrieve_data(name)
+    item_names = []  # Initialize item_names as empty list
+    if so_df is not None:
+        item_names = so_df['item_name'].unique().tolist()
+        if selected_item_name:
+            selected_row = so_df[so_df['item_name'] == selected_item_name].iloc[0]
+            item_code = selected_row['item_code']
+            serial_no = selected_row['serial_no']
+            qty = selected_row['qty']
+            territory = selected_row['territory']
+            customer = selected_row['customer']
+            po_no = selected_row['po_no']
+            sales_order = selected_row['name']
+
+            certificate_content = render_template('sticker.html', item_name=selected_item_name, item_code=item_code,
+                                                  serial_no=serial_no, qty=qty, territory=territory, customer=customer,po_no = po_no,sales_order = sales_order)
+            return render_template('index.html', item_names=item_names, certificate_content=certificate_content,
+                                   name=name)
+        else:
+            return 'Item name is required to print the certificate.'
+    else:
+        return f'Request failed to retrieve data for {name}.'
+
+
+
+
+
 @app.route('/print_ci', methods=['POST'])
 def print_commercial_invoice():
     # Get shipping address from form data
@@ -161,12 +197,13 @@ def print_commercial_invoice():
         customer_address = "<br>".join(unique_address) if unique_address else ""
 
         unique_payment_term = so_df['payment_terms_template'].unique().tolist()
+        unique_payment_term  = [str(term) for term in unique_payment_term]
         # Pass the first customer name to the template
         payment_terms_template = "<br>".join(unique_payment_term) if unique_payment_term else ""
 
         unique_freight_term = so_df['freight_term'].unique().tolist()
         # Pass the first customer name to the template
-        freight_term = "<br>".join(unique_freight_term) if unique_payment_term else ""
+        freight_term = "<br>".join(unique_freight_term) if unique_freight_term else ""
 
         unique_po_no = so_df['po_no'].unique().tolist()
         # Pass the first customer name to the template
@@ -177,17 +214,16 @@ def print_commercial_invoice():
         territory = "<br>".join(unique_territory) if unique_territory else ""
 
 
+        total = so_df['total'].mean()
+
 
         unique_packing_charges = so_df['packing_charges'].unique().tolist()
         # Pass the first customer name to the template
         packing_charges = "<br>".join(unique_packing_charges) if unique_packing_charges else ""
 
-
-
-
         ci_content = render_template('commercial_invoice.html', items=items, currency=currency,
                                      customer=customer, shipping_address=shipping_address,
-                                     customer_address=customer_address, shipping_address_name=shipping_address_name,po_no= po_no,payment_terms_template = payment_terms_template,freight_term=freight_term,territory=territory,packing_charges = packing_charges)
+                                     customer_address=customer_address, shipping_address_name=shipping_address_name,po_no= po_no,payment_terms_template = payment_terms_template,freight_term=freight_term,territory=territory,packing_charges = packing_charges,total=total)
 
         return render_template('index.html', item_names=item_names, ci_content=ci_content, name=name)
     else:
@@ -225,6 +261,7 @@ def print_shipping_list():
         customer_address = "<br>".join(unique_address) if unique_address else ""
 
         unique_payment_term = so_df['payment_terms_template'].unique().tolist()
+        unique_payment_term = [str(term) for term in unique_payment_term]
         # Pass the first customer name to the template
         payment_terms_template = "<br>".join(unique_payment_term) if unique_payment_term else ""
 
@@ -246,11 +283,15 @@ def print_shipping_list():
         # Pass the first customer name to the template
         packing_charges = "<br>".join(unique_packing_charges) if unique_packing_charges else ""
 
+        unique_hsn_code = so_df['gst_hsn_code'].unique().tolist()
+        # Pass the first hsn_code to the template
+        hsn_code = "<br>".join(unique_hsn_code) if unique_hsn_code else " "
+
 
 
         si_content = render_template('shipping_list.html', items=items, currency=currency,
                                      customer=customer, shipping_address=shipping_address,
-                                     customer_address=customer_address, shipping_address_name=shipping_address_name,po_no= po_no,payment_terms_template = payment_terms_template,freight_term=freight_term,territory=territory,packing_charges = packing_charges)
+                                     customer_address=customer_address, shipping_address_name=shipping_address_name,po_no= po_no,payment_terms_template = payment_terms_template,freight_term=freight_term,territory=territory,packing_charges = packing_charges,hsn_code=hsn_code)
 
         return render_template('index.html', item_names=item_names, shipping_content=si_content, name=name)
     else:
@@ -259,7 +300,7 @@ def print_shipping_list():
 
 
 @app.route('/packing_list', methods=['POST'])
-def packing_list():
+def packing_list_spares():
     # Get shipping address from form data
     name = request.form.get('name', '')
     # Get shipping address from form data
@@ -289,6 +330,7 @@ def packing_list():
         customer_address = "<br>".join(unique_address) if unique_address else ""
 
         unique_payment_term = so_df['payment_terms_template'].unique().tolist()
+        unique_payment_term = [str(term) for term in unique_payment_term]
         # Pass the first customer name to the template
         payment_terms_template = "<br>".join(unique_payment_term) if unique_payment_term else ""
 
@@ -321,6 +363,78 @@ def packing_list():
         return f'Request failed to retrieve data for {name}.'
 
 
+
+
+@app.route('/packing_list_spares', methods=['POST'])
+def packing_list():
+    # Get shipping address from form data
+    name = request.form.get('name', '')
+    # Get shipping address from form data
+    so_df = retrieve_data(name)
+    item_names = []  # Initialize item_names as empty list
+
+    if so_df is not None:
+        item_names = so_df['item_name'].unique().tolist()
+        items = so_df.to_dict(orient='records')
+        currency = "USD"  # Assuming you have a currency variable
+
+        unique_name = so_df['name'].unique().tolist()
+        # Pass the first customer name to the template
+        sales_order = unique_name[0] if unique_name else ""
+
+        unique_shipname = so_df['customer'].unique().tolist()
+        # Pass the first customer name to the template
+        shipping_address_name = unique_shipname[0] if unique_shipname else ""
+
+        unique_customers = so_df['customer'].unique().tolist()
+        # Pass the first customer name to the template
+        customer = unique_customers[0] if unique_customers else ""
+
+        unique_shipping = so_df['shipping_address'].unique().tolist()
+        # Pass the first customer name to the template
+        shipping_address = "<br>".join(unique_shipping) if unique_shipping else ""
+
+        unique_address = so_df['address_display'].unique().tolist()
+        # Pass the first customer name to the template
+        customer_address = "<br>".join(unique_address) if unique_address else ""
+
+        unique_payment_term = so_df['payment_terms_template'].unique().tolist()
+        unique_payment_term = [str(term) for term in unique_payment_term]
+        # Pass the first customer name to the template
+        payment_terms_template = "<br>".join(unique_payment_term) if unique_payment_term else ""
+
+        unique_freight_term = so_df['freight_term'].unique().tolist()
+        # Pass the first customer name to the template
+        freight_term = "<br>".join(unique_freight_term) if unique_payment_term else ""
+
+        unique_po_no = so_df['po_no'].unique().tolist()
+        # Pass the first customer name to the template
+        po_no = "<br>".join(unique_po_no) if unique_po_no else ""
+
+        unique_territory = so_df['territory'].unique().tolist()
+        # Pass the first customer name to the template
+        territory = "<br>".join(unique_territory) if unique_territory else ""
+
+        current_date = datetime.now().strftime("%d-%m-%Y")
+
+        unique_packing_charges = so_df['packing_charges'].unique().tolist()
+        # Pass the first customer name to the template
+        packing_charges = "<br>".join(unique_packing_charges) if unique_packing_charges else ""
+
+        unique_salesorder = so_df['name'].unique().tolist()
+        # Pass the first customer name to the template
+        sales_order = unique_salesorder[0] if unique_salesorder else ""
+
+
+        pl_content_spares = render_template('packing_list_spares.html', items=items, currency=currency,
+                                     customer=customer, shipping_address=shipping_address,
+                                     customer_address=customer_address, shipping_address_name=shipping_address_name,po_no= po_no,payment_terms_template = payment_terms_template,freight_term=freight_term,territory=territory,packing_charges = packing_charges,current_date=current_date,sales_order=sales_order)
+
+        return render_template('index.html', item_names=item_names, pl_content_spares=pl_content_spares, name=name)
+    else:
+        return f'Request failed to retrieve data for {name}.'
+
+
 @app.route('/non_dgr', methods=['POST'])
 def non_dgr():
     # Get shipping address from form data
@@ -333,6 +447,7 @@ def non_dgr():
         item_names = so_df['item_name'].unique().tolist()
         items = so_df.to_dict(orient='records')
         currency = "USD"  # Assuming you have a currency variable
+
 
 
         unique_shipname = so_df['customer'].unique().tolist()
@@ -352,6 +467,7 @@ def non_dgr():
         customer_address = "<br>".join(unique_address) if unique_address else ""
 
         unique_payment_term = so_df['payment_terms_template'].unique().tolist()
+        unique_payment_term = [str(term) for term in unique_payment_term]
         # Pass the first customer name to the template
         payment_terms_template = "<br>".join(unique_payment_term) if unique_payment_term else ""
 
@@ -415,6 +531,7 @@ def scomet():
         customer_address = "<br>".join(unique_address) if unique_address else ""
 
         unique_payment_term = so_df['payment_terms_template'].unique().tolist()
+        unique_payment_term = [str(term) for term in unique_payment_term]
         # Pass the first customer name to the template
         payment_terms_template = "<br>".join(unique_payment_term) if unique_payment_term else ""
 

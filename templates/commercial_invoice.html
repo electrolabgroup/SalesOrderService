@@ -225,9 +225,9 @@ th {
             </tr>
             <tr>
                 <td colspan="7">
-    <strong>Consignee:</strong><br>
-    <span id="ship_name_placeholder">{{shipping_address_name}}</span> <button class="edit-button" onclick="editField_ship_name('shipping_address_name')">Edit</button><br>
-    <span id="ship_address_placeholder" contenteditable="true">{{ shipping_address | safe}}</span><br><button class="edit-button" onclick="editShippingAddress()">Edit</button><br>
+    <strong>Consignee:</strong><br><br>
+    <span id="ship_name_placeholder">{{shipping_address_name}}</span><br>
+    <span id="ship_address_placeholder" contenteditable="true" >{{ shipping_address | safe}}</span><br><br>
             </td>
 
                 <td colspan="7">
@@ -269,10 +269,10 @@ th {
             <tr class="line-item">
     <td contenteditable="true">{{ loop.index }}</td>
     <td contenteditable="true">{{ no_kind }}</td>
-    <td contenteditable="true">{{ hsn }}</td>
+    <td contenteditable="true">{{row['gst_hsn_code']}}</td>
     <td colspan="6" contenteditable="true">{{ row['item_name'] }}</td>
     <td contenteditable="true">{{ row['qty'] }}</td>
-    <td contenteditable="true">{{ unit }}</td>
+    <td contenteditable="true">{{ row['uom'] }}</td>
     <td contenteditable="true">{{ row['rate'] }}</td>
     <td contenteditable="true">{{ row['qty'] * row['rate'] }}</td>
 </tr>
@@ -282,7 +282,7 @@ th {
                 <td colspan="7" rowspan="2">
                     <table>
                         <tr>
-                            <td colspan="10" style="border:none;">
+                            <td colspan="10" style="border:none;" contenteditable="true">
                                 <b>Our Banker's Name & Address :</b><br><br>
                                 Kotak Mahindra Bank LTD<br>
                                 Plot N0.75, Sector 18, Shop No.4, Charms Heights,<br>
@@ -315,20 +315,28 @@ th {
                         </tr>
                     </table>
                 </td>
-                <td colspan="4"><strong>Add: Packing Charges</strong></td>
+
+
+                <td colspan="5"><strong>Add: Packing Charges</strong></td>
                 <td contenteditable="true">{{packing_charges}}</td>
-                <td contenteditable="true">0.00</td>
+
             </tr>
-            <tr>
-                <td colspan="4"><strong>Add: Freight Charges</strong></td>
+
+                <td colspan="5"><strong>Add: Freight Charges</strong></td>
                 <td contenteditable="true">{{freight_amt}}</td>
-                <td contenteditable="true">0.00</td>
+
             </tr>
+              <td colspan = 7'> </td>
+             <td colspan="5"><strong>Add: Wire Charges</strong></td>
+                <td contenteditable="true">{{freight_amt}}</td>
+
+            </tr>
+
             <tr>
-                <td colspan="7"><strong>Amount Chargeable (in words):</strong></td>
-                <td colspan="4"><strong>Total:</strong></td>
-                <td></td>
-                <td contenteditable="true">0.00</td>
+                <td colspan="7" contenteditable="true"><strong>Amount Chargeable (in words):</strong></td>
+                <td colspan="5" contenteditable="true"><strong>Total:</strong></td>
+
+                <td colspan="2" contenteditable="true">{{total}}</td>
             </tr>
             <tr>
                 <td colspan="14" contenteditable="true">
