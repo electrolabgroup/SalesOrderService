@@ -179,6 +179,7 @@ def print_commercial_invoice():
         item_names = so_df['item_name'].unique().tolist()
 
         sale_charges = so_df[["name", "account_head", "tax_amount", "total"]]
+        sale_charges = sale_charges.drop_duplicates()
         sale_charges = sale_charges.sort_values(by='total', ascending=True)
         so_df = so_df[
             ["name", "customer", "item_code", "item_name", "serial_no", "item_name", "territory", "qty",
@@ -258,7 +259,7 @@ def print_shipping_list():
 
         sale_charges = so_df[["name", "account_head", "tax_amount", "total"]]
         sale_charges = sale_charges.sort_values(by='total', ascending=True)
-
+        sale_charges = sale_charges.drop_duplicates()
         so_df = so_df[
             ["name", "customer", "item_code", "item_name", "serial_no", "item_name", "territory", "qty",
              "address_display",
