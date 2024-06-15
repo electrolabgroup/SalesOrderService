@@ -279,7 +279,7 @@ th {
 
             {% endfor %}
             <tr>
-                <td colspan="7" rowspan="2">
+                <td colspan="7" rowspan="6">
                     <table>
                         <tr>
                             <td colspan="10" style="border:none;" contenteditable="true">
@@ -315,29 +315,20 @@ th {
                         </tr>
                     </table>
                 </td>
-
-
-                <td colspan="5"><strong>Add: Packing Charges</strong></td>
-                <td contenteditable="true">{{packing_charges}}</td>
-
             </tr>
-
-                <td colspan="5"><strong>Add: Freight Charges</strong></td>
-                <td contenteditable="true">{{freight_amt}}</td>
-
-            </tr>
-              <td colspan = 7'> </td>
-             <td colspan="5"><strong>Add: Wire Charges</strong></td>
-                <td contenteditable="true">{{freight_amt}}</td>
-
-            </tr>
-
+            {% for row in charges %}
             <tr>
-                <td colspan="7" contenteditable="true"><strong>Amount Chargeable (in words):</strong></td>
-                <td colspan="5" contenteditable="true"><strong>Total:</strong></td>
+                <td colspan="4" contenteditable="true"><strong>{{row['account_head']}}</strong></td>
+                <td contenteditable="true" colspan="1">{{row['tax_amount']}}</td>
+                <td contenteditable="true">{{row['total']}}</td>
 
-                <td colspan="2" contenteditable="true">{{total}}</td>
             </tr>
+            {% endfor %}
+            <tr>
+                <td contenteditable="true" colspan="5"><strong>Grand Total:</strong></td>
+                <td contenteditable="true"><strong> </strong></td>
+            </tr>
+
             <tr>
                 <td colspan="14" contenteditable="true">
                     <ul type="disc">

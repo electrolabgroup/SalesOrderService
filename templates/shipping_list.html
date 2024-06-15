@@ -281,30 +281,30 @@ th {
 
     </tr>
     {% endfor %}
+        
         <!-- End repeat -->
           <tr>
-            <td colspan="2" rowspan="3">
+            <td colspan="2" rowspan="6">
                 <strong>Net Wt:</strong> <span id="net_weight_placeholder">{{total_net_weight}}  </span> <button class="edit-button" onclick="editNet()">Edit</button> KGS <br>
             </td>
-            <td colspan="2" rowspan="3">
+            <td colspan="2" rowspan="6">
                 <strong>Gross Wt:</strong> <span id="gross_weight_placeholder">{{gross}}  </span> <button class="edit-button" onclick="editGross()">Edit</button> KGS
             </td>
-            <td colspan="2"><strong>Add: Packing Charges</strong></td>
-            <td contenteditable="true"></td>
-        </tr>
-        <tr>
-            <td colspan="2"><strong>Add: Wire/Bank Charges</strong></td>
-            <td contenteditable="true"></td>
-        </tr>
-        <tr>
-            <td colspan="2"><strong>Add: Freight Charges</strong></td>
-            <td contenteditable="true">{{freight_amt}}</td>
-        </tr>
-        <tr><td colspan="4" contenteditable="true"></td>
-            <td colspan="2"  contenteditable="true"><strong>Total:</strong></td>
-            <td contenteditable="true"></td>
+              </tr>
+         {% for row in charges %}
+            <tr>
+                <td contenteditable="true"><strong>{{row['account_head']}}</strong></td>
+                <td contenteditable="true">{{row['tax_amount']}}</td>
+                <td contenteditable="true">{{row['total']}}</td>
 
-        </tr>
+
+            </tr>
+
+            {% endfor %}
+            <tr>
+                <td contenteditable="true"><strong>Total</strong></td>
+                <td contenteditable="true"></td>
+            </tr>
     </table>
     <div class="footer">
         <button onclick="window.print()">Print Shipping Instruction</button>

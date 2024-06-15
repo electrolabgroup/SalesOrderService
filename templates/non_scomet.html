@@ -27,6 +27,17 @@
             .no-print {
                 display: none !important; /* Hide elements with class 'no-print' */
             }
+            .edit-button {
+        display: none !important; /* Hide elements with class 'no-print' */
+    }
+
+    .letterhead-row {
+        display: table-row !important; /* Ensure the letterhead row is displayed in print */
+    }
+
+     .line-item.page-break-bottom td {
+        border-bottom: 1px solid #000; /* Add bottom border when there's a page break */
+    }
         }
         body {
             font-family: Arial, sans-serif;
@@ -119,9 +130,7 @@
         </tr>
         {% endfor %}
     </table>
-    <ul>
-        <li>{{ item_name }}</li>
-    </ul>
+
     <p>is used to check the hardness of tablets & there is no dual use of export product for any other purpose listed in the SCOMET Items. We hereby request you to kindly allow the goods for export.</p>
     <p>Kindly do the needful and oblige.</p>
     <p>Thanking you,<br>

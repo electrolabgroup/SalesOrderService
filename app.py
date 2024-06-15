@@ -19,7 +19,7 @@ def retrieve_data(name):
 
     while True:
         params = {
-            'fields': '["name","customer","items.item_code","items.item_name","items.serial_no","items.item_name","territory","items.qty","address_display","shipping_address","shipping_address_name","po_no","po_date","freight_term","payment_terms_template","currency","items.rate","items.amount","freight_amt","packing_charges","total_net_weight","items.gst_hsn_code","items.uom","total_net_weight","net_total","total"]',
+            'fields': '["name","customer","items.item_code","items.item_name","items.serial_no","items.item_name","territory","items.qty","address_display","shipping_address","shipping_address_name","po_no","po_date","freight_term","payment_terms_template","currency","items.rate","items.amount","freight_amt","packing_charges","total_net_weight","items.gst_hsn_code","items.uom","total_net_weight","net_total","taxes.account_head","taxes.tax_amount","taxes.total"]',
             'limit_start': limit_start,
             'limit_page_length': limit_page_length,
             'filters': f'[["name", "in", "{name}"]]'
@@ -172,13 +172,29 @@ def print_commercial_invoice():
     name = request.form.get('name', '')
     # Get shipping address from form data
     so_df = retrieve_data(name)
+
     item_names = []  # Initialize item_names as empty list
 
     if so_df is not None:
         item_names = so_df['item_name'].unique().tolist()
-        items = so_df.to_dict(orient='records')
-        currency = "USD"  # Assuming you have a currency variable
 
+        sale_charges = so_df[["name", "account_head", "tax_amount", "total"]]
+        sale_charges = sale_charges.sort_values(by='total', ascending=True)
+        so_df = so_df[
+            ["name", "customer", "item_code", "item_name", "serial_no", "item_name", "territory", "qty",
+             "address_display",
+             "shipping_address", "shipping_address_name", "po_no", "po_date", "freight_term", "payment_terms_template",
+             "currency", "rate", "amount", "freight_amt", "packing_charges", "total_net_weight", "gst_hsn_code", "uom",
+             "total_net_weight", "net_total"]]
+
+        # Drop duplicate rows
+        so_df = so_df.drop_duplicates()
+        items = so_df.to_dict(orient='records')
+        charges = sale_charges.to_dict(orient='records')
+
+        unique_currency = so_df['currency'].unique().tolist()
+        # Pass the first customer name to the template
+        currency = unique_currency[0] if unique_currency else ""
 
         unique_shipname = so_df['customer'].unique().tolist()
         # Pass the first customer name to the template
@@ -214,16 +230,15 @@ def print_commercial_invoice():
         territory = "<br>".join(unique_territory) if unique_territory else ""
 
 
-        total = so_df['total'].mean()
 
 
         unique_packing_charges = so_df['packing_charges'].unique().tolist()
         # Pass the first customer name to the template
         packing_charges = "<br>".join(unique_packing_charges) if unique_packing_charges else ""
 
-        ci_content = render_template('commercial_invoice.html', items=items, currency=currency,
+        ci_content = render_template('commercial_invoice.html', items=items, currency=currency,charges= charges,
                                      customer=customer, shipping_address=shipping_address,
-                                     customer_address=customer_address, shipping_address_name=shipping_address_name,po_no= po_no,payment_terms_template = payment_terms_template,freight_term=freight_term,territory=territory,packing_charges = packing_charges,total=total)
+                                     customer_address=customer_address, shipping_address_name=shipping_address_name,po_no= po_no,payment_terms_template = payment_terms_template,freight_term=freight_term,territory=territory,packing_charges = packing_charges)
 
         return render_template('index.html', item_names=item_names, ci_content=ci_content, name=name)
     else:
@@ -240,8 +255,25 @@ def print_shipping_list():
 
     if so_df is not None:
         item_names = so_df['item_name'].unique().tolist()
+
+        sale_charges = so_df[["name", "account_head", "tax_amount", "total"]]
+        sale_charges = sale_charges.sort_values(by='total', ascending=True)
+
+        so_df = so_df[
+            ["name", "customer", "item_code", "item_name", "serial_no", "item_name", "territory", "qty",
+             "address_display",
+             "shipping_address", "shipping_address_name", "po_no", "po_date", "freight_term", "payment_terms_template",
+             "currency", "rate", "amount", "freight_amt", "packing_charges", "total_net_weight", "gst_hsn_code", "uom",
+             "total_net_weight", "net_total"]]
+
+        # Drop duplicate rows
+        so_df = so_df.drop_duplicates()
         items = so_df.to_dict(orient='records')
-        currency = "USD"  # Assuming you have a currency variable
+        charges = sale_charges.to_dict(orient='records')
+
+        unique_currency = so_df['currency'].unique().tolist()
+        # Pass the first customer name to the template
+        currency = unique_currency[0] if unique_currency else ""
 
 
         unique_shipname = so_df['customer'].unique().tolist()
@@ -289,7 +321,7 @@ def print_shipping_list():
 
 
 
-        si_content = render_template('shipping_list.html', items=items, currency=currency,
+        si_content = render_template('shipping_list.html', charges= charges,items=items, currency=currency,
                                      customer=customer, shipping_address=shipping_address,
                                      customer_address=customer_address, shipping_address_name=shipping_address_name,po_no= po_no,payment_terms_template = payment_terms_template,freight_term=freight_term,territory=territory,packing_charges = packing_charges,hsn_code=hsn_code)
 
@@ -309,8 +341,20 @@ def packing_list_spares():
 
     if so_df is not None:
         item_names = so_df['item_name'].unique().tolist()
+
+        sale_charges = so_df[["name", "account_head", "tax_amount", "total"]]
+        so_df = so_df[
+            ["name", "customer", "item_code", "item_name", "serial_no", "item_name", "territory", "qty",
+             "address_display",
+             "shipping_address", "shipping_address_name", "po_no", "po_date", "freight_term", "payment_terms_template",
+             "currency", "rate", "amount", "freight_amt", "packing_charges", "total_net_weight", "gst_hsn_code", "uom",
+             "total_net_weight", "net_total"]]
+
+        # Drop duplicate rows
+        so_df = so_df.drop_duplicates()
         items = so_df.to_dict(orient='records')
-        currency = "USD"  # Assuming you have a currency variable
+        charges = sale_charges.to_dict(orient='records')
+        currency = so_df['currency']  # Assuming you have a currency variable
 
 
         unique_shipname = so_df['customer'].unique().tolist()
@@ -375,8 +419,20 @@ def packing_list():
 
     if so_df is not None:
         item_names = so_df['item_name'].unique().tolist()
+
+        sale_charges = so_df[["name", "account_head", "tax_amount", "total"]]
+        so_df = so_df[
+            ["name", "customer", "item_code", "item_name", "serial_no", "item_name", "territory", "qty",
+             "address_display",
+             "shipping_address", "shipping_address_name", "po_no", "po_date", "freight_term", "payment_terms_template",
+             "currency", "rate", "amount", "freight_amt", "packing_charges", "total_net_weight", "gst_hsn_code", "uom",
+             "total_net_weight", "net_total"]]
+
+        # Drop duplicate rows
+        so_df = so_df.drop_duplicates()
         items = so_df.to_dict(orient='records')
-        currency = "USD"  # Assuming you have a currency variable
+        charges = sale_charges.to_dict(orient='records')
+        currency = so_df['currency']  # Assuming you have a currency variable
 
         unique_name = so_df['name'].unique().tolist()
         # Pass the first customer name to the template
@@ -445,8 +501,20 @@ def non_dgr():
 
     if so_df is not None:
         item_names = so_df['item_name'].unique().tolist()
+
+        sale_charges = so_df[["name", "account_head", "tax_amount", "total"]]
+        so_df = so_df[
+            ["name", "customer", "item_code", "item_name", "serial_no", "item_name", "territory", "qty",
+             "address_display",
+             "shipping_address", "shipping_address_name", "po_no", "po_date", "freight_term", "payment_terms_template",
+             "currency", "rate", "amount", "freight_amt", "packing_charges", "total_net_weight", "gst_hsn_code", "uom",
+             "total_net_weight", "net_total"]]
+
+        # Drop duplicate rows
+        so_df = so_df.drop_duplicates()
         items = so_df.to_dict(orient='records')
-        currency = "USD"  # Assuming you have a currency variable
+        charges = sale_charges.to_dict(orient='records')
+        currency = so_df['currency']  # Assuming you have a currency variable
 
 
 
@@ -510,8 +578,20 @@ def scomet():
 
     if so_df is not None:
         item_names = so_df['item_name'].unique().tolist()
+
+        sale_charges = so_df[["name", "account_head", "tax_amount", "total"]]
+        so_df = so_df[
+            ["name", "customer", "item_code", "item_name", "serial_no", "item_name", "territory", "qty",
+             "address_display",
+             "shipping_address", "shipping_address_name", "po_no", "po_date", "freight_term", "payment_terms_template",
+             "currency", "rate", "amount", "freight_amt", "packing_charges", "total_net_weight", "gst_hsn_code", "uom",
+             "total_net_weight", "net_total"]]
+
+        # Drop duplicate rows
+        so_df = so_df.drop_duplicates()
         items = so_df.to_dict(orient='records')
-        currency = "USD"  # Assuming you have a currency variable
+        charges = sale_charges.to_dict(orient='records')
+        currency = so_df['currency']  # Assuming you have a currency variable
 
 
         unique_shipname = so_df['customer'].unique().tolist()
