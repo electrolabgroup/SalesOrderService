@@ -318,15 +318,15 @@ th {
             </tr>
             {% for row in charges %}
             <tr>
-                <td colspan="4" contenteditable="true"><strong>{{row['account_head']}}</strong></td>
-                <td contenteditable="true" colspan="1">{{row['tax_amount']}}</td>
-                <td contenteditable="true">{{row['total']}}</td>
+                <td contenteditable="true" colspan="5"><strong>{{row['account_head']}}</strong></td>
+                <td contenteditable="true" >{{row['tax_amount']}}</td>
+
 
             </tr>
             {% endfor %}
             <tr>
-                <td contenteditable="true" ><strong>Grand Total:</strong></td>
-                <td contenteditable="true" colspan="5"><strong> </strong></td>
+                <td contenteditable="true" colspan="5"><strong>Grand Total:</strong></td>
+                <td contenteditable="true" ><strong> </strong></td>
             </tr>
              <tr>
                 <td contenteditable="true" ><strong>Total Amount in words:</strong></td>
