@@ -19,12 +19,15 @@
                 top: 0;
                 width: 210mm; /* Ensure it fits A4 width */
                 height: 297mm; /* Ensure it fits A4 height */
-                overflow: hidden; /* Prevent overflow to next page */
+
             }
             .footer {
                 display: none;
             }
             .no-print {
+                display: none !important; /* Hide elements with class 'no-print' */
+            }
+                 .edit-button {
                 display: none !important; /* Hide elements with class 'no-print' */
             }
         }
@@ -96,7 +99,7 @@
 
         <img src="{{ url_for('static', filename='letterhead.png') }}" alt="Letterhead Image" style="display: block; margin: 0 auto; width: 100%; max-width: 100%;" />
 
-    <p><strong>Date:</strong> </p>
+    <p contenteditable="true"><strong>Date:</strong> </p>
     <p>To,<br>
     The Dy. Commissioner of Customs,<br>
     Export Department,<br>

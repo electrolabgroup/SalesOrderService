@@ -294,16 +294,21 @@ th {
          {% for row in charges %}
             <tr>
                 <td contenteditable="true"><strong>{{row['account_head']}}</strong></td>
-                <td contenteditable="true">{{row['tax_amount']}}</td>
-                <td contenteditable="true">{{row['total']}}</td>
+                <td contenteditable="true" colspan = "2">{{row['tax_amount']}}</td>
+
 
 
             </tr>
 
             {% endfor %}
+
             <tr>
-                <td colspan="2" contenteditable="true"><strong>Total</strong></td>
-                <td contenteditable="true"></td>
+                <td ccontenteditable="true"><strong>Total</strong></td>
+                <td colspan="3" contenteditable="true"></td>
+           </tr>
+        <tr>
+                <td ccontenteditable="true"><strong>Amount in Words:</strong></td>
+                <td colspan="3" contenteditable="true"></td>
             </tr>
     </table>
     <div class="footer">

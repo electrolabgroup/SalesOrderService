@@ -224,16 +224,16 @@ th {
                 </td>
             </tr>
             <tr>
-                <td colspan="7">
+                <td colspan="7" contenteditable="true">
     <strong>Consignee:</strong><br><br>
     <span id="ship_name_placeholder">{{shipping_address_name}}</span><br>
     <span id="ship_address_placeholder" contenteditable="true" >{{ shipping_address | safe}}</span><br><br>
             </td>
 
-                <td colspan="7">
-                    <strong>Buyer (if other than consignee):</strong><br>
-                    <span id="customer_name_placeholder">{{customer}}</span> <button class="edit-button" onclick="editField_customer_name('customer_name')">Edit</button><br>
-                    <span id="customer_address_placeholder" contenteditable="true">{{ customer_address | safe }}</span><br><button class="edit-button" onclick="editCustomerAddress()">Edit</button><br>
+                <td colspan="7" contenteditable="true">
+                    <strong>Buyer (if other than consignee):</strong><br><br>
+                    <span id="customer_name_placeholder">{{customer}}</span> <br>
+                    <span id="customer_address_placeholder" contenteditable="true">{{ customer_address | safe }}</span><br><br>
                 </td>
             </tr>
             <tr>
