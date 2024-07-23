@@ -6,31 +6,47 @@
     <title>Commercial Invoice</title>
     <style>
 /* Ensure proper border collapse and spacing */
+/* General Table Adjustments */
 table {
-    border-collapse: collapse;
-    border-spacing: 0;
+    border-collapse: collapse; /* Ensure table borders collapse properly */
+    width: 100%; /* Set table width to 100% */
+    border: 1px solid #000; /* Add border to the entire table */
 }
 
-/* Add border to line-item rows */
-.line-item td {
-    border-left: 1px solid #000; /* Add left border */
-    border-right: 1px solid #000; /* Add right border */
-    padding: 3px; /* Maintain padding */
+th, td {
+    border: 1px solid #000; /* Add border to table cells */
+    padding: 6px; /* Increase padding for more space */
     text-align: left;
     word-wrap: break-word;
 }
 
-/* Add bottom border to last row */
-table tr:last-child td {
-    border-bottom: 1px solid #000 !important;
+/* Specific to Line Items */
+.line-item td {
+    border-bottom: 1px solid #000; /* Ensure there’s a border to make the line visible */
+    padding: 5px; /* Increase padding to make empty lines more visible */
+    height: 25px; /* Ensure row height is sufficient */
+}
+
+/* Style for the Total row */
+.total-row {
+    font-weight: bold; /* Make the text bold */
+    background-color: #f9f9f9; /* Optional: Add a background color */
+    border-top: 2px solid #000; 
+}
+
+/* .total-row td:last-child {
+    text-align: center; 
+} */
+.total-row td {
+    padding: 10px; /* Increase padding for more space */
 }
 
 @media print {
     body * {
-        visibility: hidden;
+        visibility: hidden; /* Hide everything by default */
     }
     .container, .container * {
-        visibility: visible;
+        visibility: visible; /* Make container and its children visible */
     }
     .container {
         position: absolute;
@@ -38,45 +54,50 @@ table tr:last-child td {
         right: 0;
         top: 0;
         bottom: 0;
-        width: 300mm; /* A4 width */
-        min-height: 297mm; /* A4 height */
-        padding: 3mm; /* Padding to ensure content is not too close to the edges */
-        box-sizing: border-box; /* Ensure padding is included in the width */
+        width: 210mm; /* A4 width */
+        height: 297mm; /* A4 height */
+        padding: 10mm; /* Padding to ensure content is not too close to the edges */
+        box-sizing: border-box; /* Include padding in width and height */
     }
     .footer {
-        display: none;
+        display: none; /* Hide footer */
     }
     .no-print {
         display: none !important; /* Hide elements with class 'no-print' */
     }
     table {
         width: 100%; /* Ensure the table fits within the container */
-        page-break-inside: auto; /* Allow table to break across pages */
-        border-collapse: collapse; /* Ensure no extra spacing in table */
+        border-collapse: collapse; /* Remove extra spacing in table */
+        page-break-inside: avoid; /* Avoid breaking inside the table */
     }
     tr, td, th {
-        page-break-inside: avoid; /* Avoid breaking table row inside */
+        page-break-inside: avoid; /* Avoid breaking rows or cells */
     }
     td, th {
         word-wrap: break-word; /* Break long words to prevent overflow */
+        padding: 5px; /* Ensure sufficient padding */
+        line-height: 1.2;
     }
-
     .edit-button {
-        display: none !important; /* Hide elements with class 'no-print' */
+        display: none !important; /* Hide edit buttons */
     }
-
     .letterhead-row {
-        display: table-row !important; /* Ensure the letterhead row is displayed in print */
+        display: table-row !important; /* Ensure letterhead row is displayed */
     }
-
-     .line-item.page-break-bottom td {
-        border-bottom: 1px solid #000; /* Add bottom border when there's a page break */
+    .line-item.page-break-bottom td {
+        border-bottom: 1px solid #000; /* Add bottom border if needed */
     }
-
+    .line-item {
+        height: auto; /* Ensure rows have automatic height based on content */
+    }
+    .page-break {
+        page-break-before: always; /* Force a page break before this element */
+    }
+    button {
+        display: none !important; /* Hide all buttons during print */
+    }
 }
-
-
-        body {
+body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 10mm;
@@ -85,14 +106,13 @@ table tr:last-child td {
         }
 
          .container {
-            width: 320mm; /* A4 width */
+            width: 210mm; 
+            height: 300mm;/* A4 width */
 
             margin: 0 auto; /* Center on the page */
             padding: 10mm; /* Margin from the edge of the paper */
-
+            font-size: 1.25em;
             border-radius: 10px;
-
-
         }
 
         h1 {
@@ -183,57 +203,73 @@ th {
     background-color: #f2f2f2; /* Optionally, add background color to table headers */
 }
 
-
 .line-item td {
         border-top: none; /* Remove top border */
         border-bottom: none; /* Add bottom border */
     }
 
-
+ tr {
+    border-bottom: 1px solid #000; /* Add bottom border to each row */
+}
+tr:last-child {
+    border-bottom: none; /* Remove bottom border from the last row if needed */
+}
     </style>
-</head>
-<body>
-<div class="container">
-    <h1>Shippers Certification for Non-Hazardous Cargo</h1>
-    <table>
-        <tr>
-            <th>A.W.B.NO.</th>
-            <th>Airport of Departure</th>
-            <th>Airport for Destination</th>
-        </tr>
-        <tr>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-        </tr>
-    </table>
-    <p>
-        This is to certify that the articles/substances of this shipment are properly described by name. That they are not listed in the current edition of Dangerous Goods Regulations (DGR), alphabetical list of dangerous goods. Nor do they correspond to any of the hazard classes appearing in the DGR Section 3 Classification of Dangerous Goods and that they are known to be not dangerous, i.e., not restricted. Furthermore, the shipper confirms that the goods are in proper condition for transportation on passenger-carrying aircraft (DGR Para 8.1.23).
-    </p>
-    <table>
-        <tr>
-            <th>Marks and Number of Packages</th>
-            <th>Proper Description of Goods <br>(Trade Name Not Permitted) Specify Each Article Separately</th>
-            <th>Net Quantity per Package</th>
-        </tr>
-        <!-- Repeat this block for each item -->
-         {% for row in items %}
-        <tr class="line-item">
-            <td contenteditable="true"> </td>
-            <td contenteditable="true">{{ row['item_name'] }}</td>
-            <td contenteditable="true">{{ row['qty'] }}</td>
-
-        </tr>
-        {% endfor %}
-        <!-- End repeat -->
-        <tr>
-            <td colspan="2" style="text-align: right;"><strong>Total</strong></td>
-            <td contenteditable="true">0.00</td>
-        </tr>
-    </table>
-    <div class="footer">
-        <button onclick="window.print()">Print Certification</button>
+    </head>
+    <body>
+    <div class="container">
+        <h1>Shippers Certification for Non-Hazardous Cargo</h1>
+        <table>
+            <tr>
+                <th>A.W.B.NO.</th>
+                <th>Airport of Departure</th>
+                <th>Airport for Destination</th>
+            </tr>
+            <tr>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+            </tr>
+        </table>
+        <p>
+            This is to certify that the articles/substances of this shipment are properly described by name. That they are not listed in the current edition of Dangerous Goods Regulations (DGR), alphabetical list of dangerous goods. Nor do they correspond to any of the hazard classes appearing in the DGR Section 3 Classification of Dangerous Goods and that they are known to be not dangerous, i.e., not restricted. Furthermore, the shipper confirms that the goods are in proper condition for transportation on passenger-carrying aircraft (DGR Para 8.1.23).
+        </p>
+        <table>
+            <tr>
+                <th>Marks and Number of Packages</th>
+                <th>Proper Description of Goods <br>(Trade Name Not Permitted) Specify Each Article Separately</th>
+                <th>Net Quantity per Package</th>
+            </tr>
+            {% for row in items %}
+            <tr class="line-item">
+                <td contenteditable="true"> </td>
+                <td contenteditable="true">{{ row['item_name'] }}</td>
+                <td contenteditable="true">{{ row['qty'] }}</td>
+            </tr>
+            {% endfor %}
+           
+            {% set total_rows = 15 %}
+            {% set current_rows = items|length %}
+            {% for i in range(current_rows, total_rows) %}
+            <tr class="line-item">
+                <td contenteditable="true"> </td>
+                <td contenteditable="true"> </td>
+                <td contenteditable="true"> </td>
+            </tr>
+            {% endfor %}
+            <tr class="total-row">
+                <td colspan="2" style="text-align: right;"><strong>Total</strong></td>
+                <td contenteditable="true">0.00</td>
+            </tr>
+        </table>
+      
+        <button class="no-print" onclick="addRow()">Add Row</button>
+        <button class="no-print" onclick="removeRow()">Remove Row</button>
+        <div class="footer">
+            <button onclick="window.print()">Print Certification</button>
+        </div>
     </div>
-</div>
-</body>
+    </body>
+   
 </html>
+    

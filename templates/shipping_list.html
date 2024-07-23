@@ -29,50 +29,62 @@ table tr:last-child td {
     body * {
         visibility: hidden;
     }
+
     .container, .container * {
         visibility: visible;
     }
+
     .container {
         position: absolute;
         left: 0;
         right: 0;
         top: 0;
         bottom: 0;
-        width: 300mm; /* A4 width */
-        min-height: 297mm; /* A4 height */
-        padding: 3mm; /* Padding to ensure content is not too close to the edges */
-        box-sizing: border-box; /* Ensure padding is included in the width */
+        width: 210mm; /* Exact A4 width */
+        min-height: 297mm; /* Exact A4 height */
+        padding: 20mm; /* Increased padding for better content spacing */
+        box-sizing: border-box; /* Include padding in the total width */
     }
+
     .footer {
         display: none;
     }
+
     .no-print {
-        display: none !important; /* Hide elements with class 'no-print' */
+        display: none !important;
     }
+
     table {
-        width: 100%; /* Ensure the table fits within the container */
-        page-break-inside: auto; /* Allow table to break across pages */
-        border-collapse: collapse; /* Ensure no extra spacing in table */
+        width: 100%;
+        page-break-inside: auto;
+        border-collapse: collapse;
     }
+
     tr, td, th {
-        page-break-inside: avoid; /* Avoid breaking table row inside */
+        page-break-inside: avoid;
     }
+
     td, th {
-        word-wrap: break-word; /* Break long words to prevent overflow */
+        word-wrap: break-word;
     }
 
     .edit-button {
-        display: none !important; /* Hide elements with class 'no-print' */
+        display: none !important;
     }
 
     .letterhead-row {
-        display: table-row !important; /* Ensure the letterhead row is displayed in print */
+        display: table-row !important;
     }
 
-     .line-item.page-break-bottom td {
-        border-bottom: 1px solid #000; /* Add bottom border when there's a page break */
+    .line-item.page-break-bottom td {
+        border-bottom: 1px solid #000;
     }
 
+    /* Optional: Set specific margins for the printed page */
+    @page {
+        size: A4;
+        margin: 20mm;
+    }
 }
 
 
@@ -85,7 +97,7 @@ table tr:last-child td {
         }
 
          .container {
-            width: 320mm; /* A4 width */
+            width: 210mm; /* A4 width */
 
             margin: 0 auto; /* Center on the page */
             padding: 10mm; /* Margin from the edge of the paper */

@@ -85,7 +85,7 @@ table tr:last-child td {
         }
 
          .container {
-            width: 320mm; /* A4 width */
+            width: 210mm; /* A4 width */
 
             margin: 0 auto; /* Center on the page */
             padding: 10mm; /* Margin from the edge of the paper */
@@ -267,7 +267,8 @@ th {
             </tr>
             {% for row in items %}
             <tr class="line-item">
-    <td contenteditable="true">{{ loop.index }}</td>
+    <td contenteditable="true">{{ loop.index }}
+    </td>
     <td contenteditable="true">{{ no_kind }}</td>
     <td contenteditable="true">{{row['gst_hsn_code']}}</td>
     <td colspan="6" contenteditable="true">{{ row['item_name'] }}</td>
@@ -276,6 +277,7 @@ th {
     <td contenteditable="true">{{ row['rate'] }}</td>
     <td contenteditable="true">{{ row['qty'] * row['rate'] }}</td>
 </tr>
+
 
             {% endfor %}
             <tr>
