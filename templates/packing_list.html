@@ -6,84 +6,115 @@
     <title>Packing List</title>
     <style>
         /* Define styles for printing */
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            .container, .container * {
-                visibility: visible;
-            }
-            .container {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 210mm; /* Ensure it fits A4 width */
-                height: 297mm; /* Ensure it fits A4 height */
-                overflow: hidden; /* Prevent overflow to next page */
-            }
-            .footer {
-                display: none;
-            }
-            .no-print {
-                display: none !important; /* Hide elements with class 'no-print' */
-            }
-        }
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4; /* Light background to distinguish container */
-        }
-        .container {
-            width: 210mm; /* A4 width */
-            height: 297mm; /* A4 height */
-            margin: 0 auto; /* Center on the page */
-            padding: 10mm; /* Margin from the edge of the paper */
+       /* Global styles for print */
+@media print {
+    body * {
+        visibility: hidden; /* Hide all content */
+    }
+    .container, .container * {
+        visibility: visible;
+         /* Make container and its content visible */
+    }
+    .container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 210mm; /* Ensure it fits A4 width */
+        overflow: visible; /* Prevent overflow to next page */
+        padding: 10mm; /* Padding to ensure content fits within page */
+        box-sizing: border-box;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        page-break-inside: auto; /* Allow table to break across pages */
+    }
+    th, td {
+        border: 1px solid #000;
+        padding: 5px;
+        text-align: left;
+        word-wrap: break-word;
+        vertical-align: top;
+    }
+    tr {
+        page-break-inside: avoid; /* Avoid breaking rows within table */
+        page-break-after: auto; /* Allow page break after rows */
+    }
+    .footer {
+        display: none; /* Hide footer in print */
+    }
+    .no-print {
+        display: none !important; /* Hide elements with class 'no-print' */
+    }
+    @page {
+        margin: 10mm; /* Adjust margins to fit content */
+    }
+}
 
-            border-radius: 10px;
-            background-color: #ffffff;
-        }
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4; /* Light background to distinguish container */
+}
 
-        h1 {
-            text-align: center;
-            text-transform: uppercase;
-            margin-bottom: 30px;
-            color: #000;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        th, td {
-            border: 1px solid #000;
-            padding: 8px;
-            text-align: left;
-            word-wrap: break-word;
-        }
-        th {
-            background-color: #ffffff;
-            color: #000;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #008080;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-right: 10px;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .small-text {
-            font-size: 0.8em;
-        }
+.container {
+    width: 210mm; /* A4 width */
+    margin: 0 auto; /* Center on the page */
+    padding: 10mm; /* Margin from the edge of the paper */
+    border-radius: 10px;
+    background-color: #ffffff;
+}
+
+h1 {
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    color: #000;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    border: 1px solid #000;
+    padding: 8px;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+th {
+    background-color: #ffffff;
+    color: #000;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #008080;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.small-text {
+    font-size: 0.8em;
+}
+
     </style>
 </head>
 <body>
@@ -179,4 +210,27 @@
     </div>
 </div>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function adjustContainerHeight() {
+            const container = document.querySelector('.container');
+            const table = container.querySelector('table');
+            const footer = container.querySelector('.footer');
+            
+            // Get the height of the table and footer
+            const tableHeight = table.offsetHeight;
+            const footerHeight = footer ? footer.offsetHeight : 0;
+            
+            // Set the container height to fit the content
+            container.style.height = `${tableHeight + footerHeight + 20}px`; // Adding some padding
+        }
+        
+        // Call the function to adjust height
+        adjustContainerHeight();
+        
+        // Optional: Adjust height on window resize
+        window.addEventListener('resize', adjustContainerHeight);
+    });
+    </script>
+    
 </html>

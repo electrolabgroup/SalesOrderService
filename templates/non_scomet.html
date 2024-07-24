@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Non SCOMET Item Declaration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Define styles for printing */
         @media print {
@@ -17,9 +18,9 @@
                 position: absolute;
                 left: 0;
                 top: 0;
-                width: 210mm; /* Ensure it fits A4 width */
-                height: 297mm; /* Ensure it fits A4 height */
-
+                width: 100%;
+                height: auto; /* Make height dynamic based on content */
+                overflow: visible; /* Ensure all content is visible */
             }
             .footer {
                 display: none;
@@ -27,9 +28,15 @@
             .no-print {
                 display: none !important; /* Hide elements with class 'no-print' */
             }
-                 .edit-button {
+            .edit-button {
                 display: none !important; /* Hide elements with class 'no-print' */
-            }
+            }   .no-print {
+        display: none !important; /* Hide elements with class 'no-print' */
+    }
+    th.no-print {
+        display: none !important; /* Hide the column headers for editing columns */
+    }
+
         }
         body {
             font-family: Arial, sans-serif;
@@ -39,7 +46,7 @@
         }
         .container {
             width: 210mm; /* A4 width */
-            height: 297mm; /* A4 height */
+            height: auto; /* Make height dynamic based on content */
             margin: 0 auto; /* Center on the page */
             padding: 10mm; /* Margin from the edge of the paper */
             border-radius: 10px;
@@ -92,12 +99,35 @@
         .header div {
             text-align: right;
         }
+        .edit-item-button, .edit-qty-button {
+    background: none; /* Remove background */
+    border: none; /* Remove border */
+    cursor: pointer; /* Pointer cursor on hover */
+    padding: 0; /* Remove padding */
+    font-size: 20px; /* Adjust font size */
+    width: auto; /* Allow width to be based on content */
+    display: flex; /* Center icon */
+    align-items: center; 
+    justify-content: center;
+}
+
+.edit-item-button i, .edit-qty-button i {
+    margin: 2px; /* Remove margin around the icon */
+    width: 60px; /* Adjust width as needed */
+    height: auto; /* Maintain aspect ratio */
+    color: #000; /* Set color for visibility */
+}
+td{
+    text-align: center;
+
+}
+
     </style>
 </head>
 <body>
 <div class="container">
 
-        <img src="{{ url_for('static', filename='letterhead.png') }}" alt="Letterhead Image" style="display: block; margin: 0 auto; width: 100%; max-width: 100%;" />
+    <img src="{{ url_for('static', filename='letterhead.png') }}" alt="Letterhead Image" style="display: block; margin: 0 auto; width: 100%; max-width: 100%;" />
 
     <p contenteditable="true"><strong>Date:</strong> </p>
     <p>To,<br>
@@ -111,18 +141,35 @@
         <tr>
             <th>Sr. No</th>
             <th>Item Name</th>
+            <th class="no-print ">Edit Item</th>
             <th>Net Quantity per Package</th>
+            <th class="no-print">Edit Quantity</th>
         </tr>
         <!-- Repeat this block for each item -->
         {% for row in items %}
         <tr class="line-item">
             <td>{{ loop.index }}</td>
-            <td><span id="item_placeholder_{{ loop.index }}">{{ row.item_name }}</span> <button class="edit-button" onclick="editItem({{ loop.index }})">Edit</button></td>
-            <td><span id="qty_placeholder_{{ loop.index }}">{{ row.qty }}</span> <button class="edit-button" onclick="editQty({{ loop.index }})">Edit</button></td>
+            <td>
+                <span id="item_placeholder_{{ loop.index }}">{{ row.item_name }}</span>
+            </td>
+            <td class="no-print">
+                <button class="edit-item-button" onclick="editItem({{ loop.index }})">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </td>
+            <td>
+                <span id="qty_placeholder_{{ loop.index }}">{{ row.qty }}</span>
+            </td>
+            <td class="no-print">
+                <button class="edit-qty-button" onclick="editQty({{ loop.index }})">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </td>
         </tr>
         {% endfor %}
     </table>
-
+    
+    
     <p>is used to check the hardness of tablets & there is no dual use of export product for any other purpose listed in the SCOMET Items. We hereby request you to kindly allow the goods for export.</p>
     <p>Kindly do the needful and oblige.</p>
     <p>Thanking you,<br>
