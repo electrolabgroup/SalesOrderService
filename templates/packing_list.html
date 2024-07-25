@@ -96,7 +96,13 @@ th {
     text-align: center;
     margin-top: 20px;
 }
+th.net-wt, td.net-wt {
+            width: 15%; /* Increase width of Net Wt. column */
+        }
 
+        th.gross-wt, td.gross-wt {
+            width: 15%; /* Reduce width of Gross Wt. column */
+        }
 button {
     padding: 10px 20px;
     background-color: #008080;
@@ -168,14 +174,12 @@ button:hover {
         <tr>
             <th>Marks & Nos./ Container No.</th>
             <th>No. & Kind of Pkgs.</th>
-            <th>Description of Goods</th>
+            <th>Description of Goods     </th>
             <th>Quantity</th>
             <th>Unit</th>
-            <th>Net Wt.</th>
-            <th>Gross Wt.</th>
-            <th>Total Wt.</th>
+            <th class="net-wt">Net Wt.</th>
+            <th class="gross-wt">Gross Wt.</th>
         </tr>
-        <!-- Repeat this block for each item -->
          {% for row in items %}
         <tr>
             <td contenteditable="true"></td>
@@ -185,13 +189,10 @@ button:hover {
             <td contenteditable="true"></td>
             <td contenteditable="true">0.00</td>
             <td contenteditable="true">0.00</td>
-            <td contenteditable="true">0.00</td>
         </tr>
         {% endfor %}
-        <!-- End repeat -->
         <tr>
             <td colspan="5" contenteditable="true"><strong>Total Net Wt. & Gross Wt.</strong></td>
-            <td contenteditable="true">0.00</td>
             <td contenteditable="true">0.00</td>
             <td contenteditable="true">0.00</td>
         </tr>
